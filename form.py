@@ -49,6 +49,14 @@ class Add(db.Model, UserMixin):
     rating = db.Column(db.Integer, nullable = False)
     sold = db.Column(db.Integer, nullable = False)
 
+class Cards(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(30), nullable = False)
+    card_number = db.Column(db.Integer, nullable = False, unique = True)
+    expiration_date = db.Column(db.Integer, nullable = False)
+    security_code = db.Column(db.Integer, nullable = False)
+    zip_code = db.Column(db.Integer, nullable = False)
+
 
 admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Add, db.session))
