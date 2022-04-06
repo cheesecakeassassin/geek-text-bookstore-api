@@ -226,13 +226,13 @@ def get_top_sellers():
 def get_book_by_rating():
     ratingPicked = request.json['rating']
     books = Book.query.all()
-    bookList = []
+    reviewList = []
     for book in books:
         if book.rating >= ratingPicked:
             all_books = book_dict(book)
-            bookList.append(all_books)
-    sortedBooks = sorted(bookList, key=lambda x: x['rating'])
-    result = json.dumps(sortedBooks)
+            reviewList.append(all_books)
+    reviewList = sorted(reviewList, key=lambda x: x['rating'])
+    result = json.dumps(reviewList)
     return result
 
 
@@ -522,7 +522,7 @@ def get_reviewList(userName):
 # db.session.add(scrum)
 # db.session.commit()
 
-# >>> from app import db, Book
+# >>> from app import db, Book, User, Review
 # >>> db.create_all()
 # >>> db.drop_all()
 
