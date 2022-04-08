@@ -1,0 +1,41 @@
+{% extends "layout/main.html" %}
+
+{% block body %}
+<article>
+  <a href="/dashboard"> &larr; Back to dashboard</a>
+  <h2>
+    Edit Post
+  </h2>
+  <form class="edit-post-form">
+    <div>
+      <input name="post-title" type="text" value="{{post.title}}" />
+      <span>({{post.post_url}})</span>
+    </div>
+    <div>
+      {{post.vote_count}} point(s) by you on {{post.created_at}}
+      |
+      <a href="/post/{{post.id}}">{{post.comments|length}} comment(s)</a>
+    </div>
+    <button type="submit">Save post</button>
+    <button type="button" class="delete-post-btn">Delete post</button>
+  </form>
+</article>
+
+<form class="comment-form">
+  <div>
+    <textarea name="comment-body"></textarea>
+  </div>
+
+  <div>
+    <button type="submit">add comment</button>
+  </div>
+</form>
+
+{% with comments=post.comments %}
+  {% include "partials/comments.html" %}
+{% endwith %}
+
+<script src="/javascript/edit-post.js"></script>
+<script src="/javascript/delete-post.js"></script>
+<script src="/javascript/comment.js"></script>
+{% endblock %}
