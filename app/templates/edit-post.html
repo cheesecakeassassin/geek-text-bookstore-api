@@ -9,12 +9,12 @@
   <form class="edit-post-form">
     <div>
       <input name="post-title" type="text" value="{{post.title}}" />
-      <span>({{post.post_url}})</span>
+      <span>({{post.post_url|format_url}})</span>
     </div>
     <div>
-      {{post.vote_count}} point(s) by you on {{post.created_at}}
+      {{post.vote_count}} {{post.vote_count|format_plural('point')}} by you on {{post.created_at|format_date}}
       |
-      <a href="/post/{{post.id}}">{{post.comments|length}} comment(s)</a>
+      <a href="/post/{{post.id}}">{{post.comments|length}} {{post.comments|length|format_plural('comment')}}</a>
     </div>
     <button type="submit">Save post</button>
     <button type="button" class="delete-post-btn">Delete post</button>
