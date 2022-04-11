@@ -1,5 +1,5 @@
-from flask import Blueprint, request, jsonify, session, json
-from app.models import User, Post, Comment, Vote
+from flask import Blueprint, request, jsonify, session
+from app.models import User, Card, Post, Comment
 from app.db import get_db
 import sys
 bp = Blueprint('api', __name__, url_prefix='/api')
@@ -15,6 +15,7 @@ def get_all_users():
     userList.append(all_users)
 
   return jsonify(userList)
+
 
 # Get user by id
 @bp.route('/users/<id>')
@@ -32,6 +33,7 @@ def get_user_by_id(id):
 
   return jsonify(result)
 
+
 # Get user by username
 @bp.route('/user/<username>')
 def get_user_by_username(username):
@@ -47,6 +49,7 @@ def get_user_by_username(username):
     return jsonify(error = "User doesn't exist"), 500
 
   return jsonify(result)
+
 
 # Add user
 @bp.route('/users', methods=['POST'])
@@ -79,24 +82,73 @@ def add_user():
   session['loggedIn'] = True
   return jsonify(id = newUser.id, name = newUser.name, username = newUser.username, email = newUser.email, home_address = newUser.home_address, password = newUser.password)
 
-@bp.route('/users/logout', methods=['POST'])
-def logout():
-  # Remove session variables
-  session.clear()
-  return '', 204
 
-@bp.route('/users/login', methods=['POST'])
-def login():
+# Update user by id
+@bp.route('/users/<id>', methods=['PUT'])
+def update_user(id):
   data = request.get_json()
   db = get_db()
 
   try:
-    user = db.query(User).filter(User.email == data['email']).one()
+    user = db.query(User).get(id)
+    user.name = data['name'],
+    user.username = data['username'],
+    user.home_address = data['home_address'],
+    user.password = data['password']
+    db.commit()
   except:
     print(sys.exc_info()[0])
 
-    if user.verify_password(data['password']) == False:
-      return jsonify(message = 'Incorrect credentials'), 400
+    db.rollback()
+    return jsonify(message = 'Invalid update (Note: email cannot be updated and other fields must be included)'), 404
+
+  return '', 204
+
+
+# Remove session variables
+# session.clear()
+
+# Get all cards
+@bp.route('/cards')
+def get_all_cards():
+  db = get_db()
+  cards = db.query(Card).all()
+  cardList = []
+  for card in cards:
+    all_cards = card.to_dict()
+    cardList.append(all_cards)
+
+  return jsonify(cardList)
+
+# Add card
+@bp.route('/cards', methods=['POST'])
+def add_card():
+  data = request.get_json()
+  db = get_db()
+  
+  try:
+    newCard = Card(
+      name = data['name'],
+      card_number = data['card_number'],
+      expiration_date = data['expiration_date'],
+      security_code = data['security_code'],
+      zip_code = data['zip_code'],
+      user_id = data['user_id']
+    )
+
+    # Save in database
+    db.add(newCard)
+    db.commit()
+  except:
+    print(sys.exc_info()[0])
+
+    # Insert failed, so send error to front end
+    db.rollback()
+    return jsonify(message = 'Add card failed'), 500
+
+  return jsonify(id = newCard.id, name = newCard.name, expiration_date = newCard.expiration_date, card_number = newCard.card_number, security_code = newCard.security_code, zip_code = newCard.zip_code, user_id = newCard.user_id)
+
+
 
 @bp.route('/comments', methods=['POST'])
 def comment():
@@ -121,50 +173,8 @@ def comment():
 
   return jsonify(id = newComment.id)
 
-@bp.route('/posts/upvote', methods=['PUT'])
-def upvote():
-  data = request.get_json()
-  db = get_db()
 
-  try:
-    # create a new vote with incoming id and session id
-    newVote = Vote(
-      post_id = data['post_id'],
-      user_id = session.get('user_id')
-    )
 
-    db.add(newVote)
-    db.commit()
-  except:
-    print(sys.exc_info()[0])
-
-    db.rollback()
-    return jsonify(message = 'Upvote failed'), 500
-
-  return '', 204
-
-@bp.route('/posts', methods=['POST'])
-def create():
-  data = request.get_json()
-  db = get_db()
-
-  try:
-    # create a new post
-    newPost = Post(
-      title = data['title'],
-      post_url = data['post_url'],
-      user_id = session.get('user_id')
-    )
-
-    db.add(newPost)
-    db.commit()
-  except:
-    print(sys.exc_info()[0])
-
-    db.rollback()
-    return jsonify(message = 'Post failed'), 500
-
-  return jsonify(id = newPost.id)
 
 @bp.route('/posts/<id>', methods=['PUT'])
 def update(id):
