@@ -1,6 +1,6 @@
 from app.db import Base
 from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import validates
+from sqlalchemy.orm import validates, relationship
 from sqlalchemy_serializer import SerializerMixin
 import bcrypt
 

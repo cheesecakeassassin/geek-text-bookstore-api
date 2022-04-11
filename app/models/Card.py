@@ -14,9 +14,9 @@ class Card(Base, SerializerMixin):
   expiration_date = Column(String(15), nullable=False)
   security_code = Column(Integer, nullable=False)
   zip_code = Column(Integer, nullable=False)
-  user_id = Column(Integer , nullable=False)
+  user_id = Column(Integer, ForeignKey('users.id'))
 
-#   user = relationship('User')
+  user = relationship('User')
 
 #   @validates('card_number')
 #   def validate_carc(self, key, card_number):
