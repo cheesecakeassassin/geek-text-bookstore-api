@@ -1,7 +1,6 @@
-from flask import Blueprint
-from app.models import Admin, Book
+from flask import Blueprint, render_template, url_for, redirect, current_app
+from app.models import AdminUser, Book
 from app.db import get_db
-from flask import render_template, url_for, redirect
 from flask_admin import Admin
 from flask_login import login_user, LoginManager, login_required, logout_user
 from flask_wtf import FlaskForm
@@ -13,24 +12,12 @@ import bcrypt
 
 bp = Blueprint('admin', __name__, url_prefix='/admin')
 salt = bcrypt.gensalt()
-admin = Admin(bp, name='microblog', template_mode='bootstrap3')
-basic_auth = BasicAuth(bp)
-bp.config['BASIC_AUTH_USERNAME'] = 'sasha'
-bp.config['BASIC_AUTH_PASSWORD'] = 'sasha'
 db = get_db;
 
-login_manager = LoginManager()
-login_manager.init_app(bp)
-login_manager.login_view = "login"
+admin = Admin(bp, name='microblog', template_mode='bootstrap3')
+    # basic_auth = BasicAuth(current_app)
 
-
-@login_manager.user_loader
-def load_user(admin_id):
-    db = get_db;
-    return db.query(Admin).get(int(admin_id))
-
-
-admin.add_view(ModelView(Admin, db))
+admin.add_view(ModelView(AdminUser, db))
 admin.add_view(ModelView(Book, db))
     
 class RegisterForm(FlaskForm):
@@ -44,8 +31,7 @@ class RegisterForm(FlaskForm):
 
     def validate_username(self, username):
         db = get_db;
-        existing_admin_username = db.query(Admin).filter_by(
-            username = username.data).first()
+        existing_admin_username = db.query(AdminUser).filter_by(username = username).first()
 
         if existing_admin_username:
             raise ValidationError(
@@ -71,7 +57,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         db = get_db;
-        user = db.query(Admin).filter_by(username=form.username.data).first()
+        user = db.query(AdminUser).filter_by(username=form.username.data).first()
         if user:
             if bcrypt.checkpw(user.password, form.password.data):
                 login_user(user)
@@ -91,7 +77,7 @@ def register():
 
     if form.validate_on_submit():
         hashed_password = bcrypt.hashpw(form.password.data.encode('utf-8'), salt)
-        new_admin = Admin(username=form.username.data, password=hashed_password)
+        new_admin = AdminUser(username=form.username.data, password=hashed_password)
         db.session.add(new_admin)
         db.session.commit()
         return redirect(url_for('login'))

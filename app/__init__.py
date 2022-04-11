@@ -1,6 +1,9 @@
 from flask import Flask
 from app.db import init_db
-from app.routes import api, admin
+from app.routes import api
+from flask_login import LoginManager
+from app.db import get_db
+from app.models import AdminUser
 
 def create_app(test_config=None):
   # Set up app config
@@ -10,10 +13,26 @@ def create_app(test_config=None):
     SECRET_KEY='super_secret_key'
   )
 
-  # Register routes
-  app.register_blueprint(api)
-  app.register_blueprint(admin)
+  login_manager = LoginManager()
+  login_manager.init_app(app)
+  login_manager.login_view = "login"
 
-  init_db(app)
+  @login_manager.user_loader
+  def load_user(admin_id):
+    db = get_db;
+    return db.query(AdminUser).get(int(admin_id))
+
+  with app.app_context():
+    # Import parts of our application
+    from app.routes import admin
+
+    app.config['BASIC_AUTH_USERNAME'] = 'sasha'
+    app.config['BASIC_AUTH_PASSWORD'] = 'sasha'
+
+    # Register Blueprints
+    app.register_blueprint(admin)
+    app.register_blueprint(api)
+
+    init_db(app)
 
   return app
