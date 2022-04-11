@@ -1,15 +1,19 @@
+from email.policy import default
 from app.db import Base
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import validates
+from sqlalchemy_serializer import SerializerMixin
 import bcrypt
 
 salt = bcrypt.gensalt()
 
-class User(Base):
+class User(Base, SerializerMixin):
   __tablename__ = 'users'
   id = Column(Integer, primary_key=True)
+  name = Column(String(50), nullable=True)
   username = Column(String(50), nullable=False)
-  email = Column(String(50), nullable=False, unique=True)
+  email = Column(String(50), nullable=True)
+  home_address = Column(String(100), nullable=True)
   password = Column(String(100), nullable=False)
 
   @validates('email')

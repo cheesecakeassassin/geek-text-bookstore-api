@@ -1,19 +1,66 @@
-from flask import Blueprint, request, jsonify, session
+from flask import Blueprint, request, jsonify, session, json
 from app.models import User, Post, Comment, Vote
 from app.db import get_db
 import sys
 bp = Blueprint('api', __name__, url_prefix='/api')
 
+# Get all users
+@bp.route('/users')
+def get_all_users():
+  db = get_db()
+  users = db.query(User).all()
+  userList = []
+  for user in users:
+    all_users = user.to_dict()
+    userList.append(all_users)
+
+  return jsonify(userList)
+
+# Get user by id
+@bp.route('/users/<id>')
+def get_user_by_id(id):
+  db = get_db()
+
+  try:
+    user = db.query(User).get(id)
+    result = user.to_dict()
+  except:
+    print(sys.exc_info()[0])
+
+    db.rollback()
+    return jsonify(error = "User doesn't exist"), 500
+
+  return jsonify(result)
+
+# Get user by username
+@bp.route('/user/<username>')
+def get_user_by_username(username):
+  db = get_db()
+
+  try:
+    user = db.query(User).filter_by(username=username).first()
+    result = user.to_dict()
+  except:
+    print(sys.exc_info()[0])
+
+    db.rollback()
+    return jsonify(error = "User doesn't exist"), 500
+
+  return jsonify(result)
+
+# Add user
 @bp.route('/users', methods=['POST'])
-def signup():
+def add_user():
   data = request.get_json()
   db = get_db()
   
   try:
     # Create a new user
     newUser = User(
+      name = data['name'],
       username = data['username'],
       email = data['email'],
+      home_address = data['home_address'],
       password = data['password']
     )
 
@@ -25,12 +72,12 @@ def signup():
 
     # Insert failed, so send error to front end
     db.rollback()
-    return jsonify(message = 'Signup failed'), 500
+    return jsonify(message = 'Add user failed'), 500
 
   session.clear()
   session['user_id'] = newUser.id
   session['loggedIn'] = True
-  return jsonify(id = newUser.id)
+  return jsonify(id = newUser.id, name = newUser.name, username = newUser.username, email = newUser.email, home_address = newUser.home_address, password = newUser.password)
 
 @bp.route('/users/logout', methods=['POST'])
 def logout():

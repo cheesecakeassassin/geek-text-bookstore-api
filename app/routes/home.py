@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, session, redirect
+from flask import Blueprint, jsonify, render_template, session, redirect
 from app.models import Post
 from app.db import get_db
 
@@ -8,13 +8,9 @@ bp = Blueprint('home', __name__, url_prefix='/')
 def index():
   # Get all posts
   db = get_db()
-  posts = db.query(Post).order_by(Post.created_at.desc()).all()
-
-  return render_template(
-    'homepage.html',
-    posts=posts,
-    loggedIn=session.get('loggedIn')
-  )
+  posts = db.query(Post).order_by(Post.created_at.desc()).first()
+  result = posts.to_dict()
+  return jsonify(result)
 
 @bp.route('/login')
 def login():

@@ -3,8 +3,9 @@ from app.db import Base
 from .Vote import Vote
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, select, func
 from sqlalchemy.orm import relationship, column_property
+from sqlalchemy_serializer import SerializerMixin
 
-class Post(Base):
+class Post(Base, SerializerMixin):
   __tablename__ = 'posts'
   id = Column(Integer, primary_key=True)
   title = Column(String(100), nullable=False)

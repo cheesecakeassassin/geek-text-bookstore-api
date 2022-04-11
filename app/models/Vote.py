@@ -1,7 +1,8 @@
 from app.db import Base
 from sqlalchemy import Column, Integer, ForeignKey
+from sqlalchemy_serializer import SerializerMixin
 
-class Vote(Base):
+class Vote(Base, SerializerMixin):
   __tablename__ = 'votes'
   id = Column(Integer, primary_key=True)
   user_id = Column(Integer, ForeignKey('users.id'))
