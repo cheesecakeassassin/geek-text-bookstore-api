@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, session
-from app.models import User, Card, Post, Comment
+from app.models import User, Card
 from app.db import get_db
 import sys
 bp = Blueprint('api', __name__, url_prefix='/api')
@@ -64,7 +64,7 @@ def add_user():
       username = data['username'],
       email = data['email'],
       home_address = data['home_address'],
-      password = data['password']
+      password = data['password'],
     )
 
     # Save in database
@@ -120,6 +120,7 @@ def get_all_cards():
 
   return jsonify(cardList)
 
+
 # Add card
 @bp.route('/cards', methods=['POST'])
 def add_card():
@@ -147,65 +148,3 @@ def add_card():
     return jsonify(message = 'Add card failed'), 500
 
   return jsonify(id = newCard.id, name = newCard.name, expiration_date = newCard.expiration_date, card_number = newCard.card_number, security_code = newCard.security_code, zip_code = newCard.zip_code, user_id = newCard.user_id)
-
-
-
-@bp.route('/comments', methods=['POST'])
-def comment():
-  data = request.get_json()
-  db = get_db()
-
-  try:
-    # Create a new comment
-    newComment = Comment(
-      comment_text = data['comment_text'],
-      post_id = data['post_id'],
-      user_id = session.get('user_id')
-    )
-
-    db.add(newComment)
-    db.commit()
-  except:
-    print(sys.exc_info()[0])
-
-    db.rollback()
-    return jsonify(message = 'Comment failed'), 500
-
-  return jsonify(id = newComment.id)
-
-
-
-
-@bp.route('/posts/<id>', methods=['PUT'])
-def update(id):
-  data = request.get_json()
-  db = get_db()
-
-  try:
-    # retrieve post and update title property
-    post = db.query(Post).filter(Post.id == id).one()
-    post.title = data['title']
-    db.commit()
-  except:
-    print(sys.exc_info()[0])
-
-    db.rollback()
-    return jsonify(message = 'Post not found'), 404
-
-  return '', 204
-
-@bp.route('/posts/<id>', methods=['DELETE'])
-def delete(id):
-  db = get_db()
-
-  try:
-    # delete post from db
-    db.delete(db.query(Post).filter(Post.id == id).one())
-    db.commit()
-  except:
-    print(sys.exc_info()[0])
-
-    db.rollback()
-    return jsonify(message = 'Post not found'), 404
-
-  return '', 204

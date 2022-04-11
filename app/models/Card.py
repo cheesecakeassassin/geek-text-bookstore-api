@@ -1,5 +1,7 @@
+from unicodedata import name
 from app.db import Base
-from sqlalchemy import BigInteger, Column, Integer, String, ForeignKey
+from marshmallow import Schema, fields
+from sqlalchemy import BigInteger, Column, ForeignKeyConstraint, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship, validates
 from sqlalchemy_serializer import SerializerMixin
 import bcrypt
@@ -14,9 +16,18 @@ class Card(Base, SerializerMixin):
   expiration_date = Column(String(15), nullable=False)
   security_code = Column(Integer, nullable=False)
   zip_code = Column(Integer, nullable=False)
-  user_id = Column(Integer, ForeignKey('users.id'))
+  user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+  ForeignKeyConstraint(['user_id'], ['users.id'])
 
   user = relationship('User')
+
+# class CardSchema(Schema):
+#     name = fields.Str()
+#     card_number = fields.Integer()
+#     expiration_date = fields.Str()
+#     security_code = fields.Integer()
+#     zip_code = fields.Integer()
+#     user_id = fields.Integer()
 
 #   @validates('card_number')
 #   def validate_carc(self, key, card_number):
