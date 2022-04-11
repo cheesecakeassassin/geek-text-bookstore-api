@@ -6,19 +6,17 @@ from flask_login import login_user, LoginManager, login_required, logout_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError
-from flask_basicauth import BasicAuth
 from flask_admin.contrib.sqla import ModelView
 import bcrypt
 
 bp = Blueprint('admin', __name__, url_prefix='/admin')
 salt = bcrypt.gensalt()
-db = get_db;
 
-admin = Admin(bp, name='microblog', template_mode='bootstrap3')
-    # basic_auth = BasicAuth(current_app)
+# db2 = get_db
 
-admin.add_view(ModelView(AdminUser, db))
-admin.add_view(ModelView(Book, db))
+# admin = Admin(bp, name='microblog', template_mode='bootstrap3')
+# admin.add_view(ModelView(AdminUser, db2))
+# admin.add_view(ModelView(Book, db2))
     
 class RegisterForm(FlaskForm):
     username = StringField(validators=[InputRequired(), Length(
@@ -30,8 +28,8 @@ class RegisterForm(FlaskForm):
     submit = SubmitField("Register")
 
     def validate_username(self, username):
-        db = get_db;
-        existing_admin_username = db.query(AdminUser).filter_by(username = username).first()
+        db = get_db()
+        existing_admin_username = db.query(Book).filter_by(username = username).first()
 
         if existing_admin_username:
             raise ValidationError(
@@ -56,7 +54,7 @@ def home():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        db = get_db;
+        db = get_db();
         user = db.query(AdminUser).filter_by(username=form.username.data).first()
         if user:
             if bcrypt.checkpw(user.password, form.password.data):
