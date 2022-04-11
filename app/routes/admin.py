@@ -7,21 +7,20 @@ from flask_login import login_user, LoginManager, login_required, logout_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError
-from flask_bcrypt import Bcrypt
 from flask_basicauth import BasicAuth
 from flask_admin.contrib.sqla import ModelView
-from app import app
+import bcrypt
 
 bp = Blueprint('admin', __name__, url_prefix='/admin')
-bcrypt = Bcrypt(app)
-admin = Admin(app, name='microblog', template_mode='bootstrap3')
-basic_auth = BasicAuth(app)
-app.config['BASIC_AUTH_USERNAME'] = 'sasha'
-app.config['BASIC_AUTH_PASSWORD'] = 'sasha'
+salt = bcrypt.gensalt()
+admin = Admin(bp, name='microblog', template_mode='bootstrap3')
+basic_auth = BasicAuth(bp)
+bp.config['BASIC_AUTH_USERNAME'] = 'sasha'
+bp.config['BASIC_AUTH_PASSWORD'] = 'sasha'
 db = get_db;
 
 login_manager = LoginManager()
-login_manager.init_app(app)
+login_manager.init_app(bp)
 login_manager.login_view = "login"
 
 
@@ -74,7 +73,7 @@ def login():
         db = get_db;
         user = db.query(Admin).filter_by(username=form.username.data).first()
         if user:
-            if bcrypt.check_password_hash(user.password, form.password.data):
+            if bcrypt.checkpw(user.password, form.password.data):
                 login_user(user)
                 return redirect(url_for('admin.index'))
         else:
@@ -91,7 +90,7 @@ def register():
     form = RegisterForm()
 
     if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data)
+        hashed_password = bcrypt.hashpw(form.password.data.encode('utf-8'), salt)
         new_admin = Admin(username=form.username.data, password=hashed_password)
         db.session.add(new_admin)
         db.session.commit()
