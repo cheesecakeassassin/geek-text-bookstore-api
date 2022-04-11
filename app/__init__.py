@@ -1,6 +1,6 @@
 from flask import Flask
 from app.db import init_db
-from app.routes import api
+from app.routes import api, admin
 
 def create_app(test_config=None):
   # Set up app config
@@ -12,6 +12,7 @@ def create_app(test_config=None):
 
   # Register routes
   app.register_blueprint(api)
+  app.register_blueprint(admin)
 
   init_db(app)
 

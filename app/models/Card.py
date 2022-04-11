@@ -1,4 +1,3 @@
-from unicodedata import name
 from app.db import Base
 from marshmallow import Schema, fields
 from sqlalchemy import BigInteger, Column, ForeignKeyConstraint, Integer, String, ForeignKey

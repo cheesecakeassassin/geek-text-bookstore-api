@@ -1,4 +1,3 @@
-from app.models import User
 from app.db import Session, Base, engine
 from app.models import User, Card, Book
 
