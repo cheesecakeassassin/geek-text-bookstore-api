@@ -2,7 +2,8 @@
   [![License: IPL 1.0](https://img.shields.io/badge/License-IPL_1.0-blue.svg)](https://opensource.org/licenses/IPL-1.0)
   ## Description
   
-This bookstore API is .
+This bookstore API is powered by Python's Flask framework. You have the ability to browse and sort books, manage a profile and its credit cards, add to a shopping cart, check book details and add books as an admin, rate books and comment on them, and add books to a wishlist. Enjoy!
+
 
 ## Technologies Used
 
@@ -11,6 +12,7 @@ This bookstore API is .
 * SQLAlchemy/MySQL (database)
 * HTML (rendering admin pages)
 * Bootstrap (CSS framework for styling html)
+
 
   ## Table of Contents
 
@@ -31,13 +33,16 @@ This bookstore API is .
   * Run ```python seeds.py``` to seed the books.
   * Finally, run ```python -m flask run``` to open the development sever and get to work!
 
+
   ### Usage
 
   * Just dive in on ```Postman``` or ```Insomnia``` and enjoy! For admin actions go to ```/admins/``` endpoint to register/login!
 
+
   ### License Info
   * [IBM License](https://opensource.org/licenses/IPL-1.0)
   * The IPL is the open-source license IBM uses for some of its software. Supposed to facilitate commercial use of said software; is very clear on the specifics of liability. Also grants explicit patent rights.
+  
   
   ### Contributing
 
@@ -48,6 +53,7 @@ This bookstore API is .
   * Karim Salazar 
   * Fernando Santamarta GitHub: https://github.com/fernandosantamarta
   * Sebastian Santa GitHub: https://github.com/cheesecakeassassin  
+
 
   ### Further Questions?
 
