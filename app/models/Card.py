@@ -1,12 +1,9 @@
 from app.db import Base
-from marshmallow import Schema, fields
 from sqlalchemy import BigInteger, Column, ForeignKeyConstraint, Integer, String, ForeignKey
-from sqlalchemy.orm import relationship, validates
+from sqlalchemy.orm import validates
 from sqlalchemy_serializer import SerializerMixin
-import bcrypt
 
-salt = bcrypt.gensalt()
-
+# Card class that includes a foreign key relationship with User class
 class Card(Base, SerializerMixin):
   __tablename__ = 'cards'
   id = Column(Integer, primary_key=True)
@@ -16,28 +13,3 @@ class Card(Base, SerializerMixin):
   security_code = Column(Integer, nullable=False)
   zip_code = Column(Integer, nullable=False)
   user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
-
-
-  # user = relationship('User')
-
-# class CardSchema(Schema):
-#     name = fields.Str()
-#     card_number = fields.Integer()
-#     expiration_date = fields.Str()
-#     security_code = fields.Integer()
-#     zip_code = fields.Integer()
-#     user_id = fields.Integer()
-
-#   @validates('card_number')
-#   def validate_carc(self, key, card_number):
-#     assert len(card_number) > 14
-
-#     # Encrypt password
-#     return bcrypt.hashpw(card_number.encode('utf-8'), salt)
-
-#   @validates('security_code')
-#   def validate_carc(self, key, security_code):
-#     assert len(security_code) > 2
-
-#     # Encrypt password
-#     return bcrypt.hashpw(security_code.encode('utf-8'), salt)

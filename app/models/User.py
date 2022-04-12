@@ -1,12 +1,13 @@
 from app.db import Base
-from marshmallow import Schema, fields
-from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship, validates
 from sqlalchemy_serializer import SerializerMixin
 import bcrypt
 
+# Generates salt used to hash password with bcrypt
 salt = bcrypt.gensalt()
 
+# User class that has a one-to-many relationship with Card class
 class User(Base, SerializerMixin):
   __tablename__ = 'users'
   id = Column(Integer, primary_key=True)
@@ -18,30 +19,22 @@ class User(Base, SerializerMixin):
 
   cards = relationship('Card', cascade='all,delete,delete-orphan')
 
-# class UserSchema(Schema):
-#   name = fields.Str()
-#   username = fields.Str()
-#   email = fields.Str()
-#   home_address = fields.Str()
-#   passowrd = fields.Str()
-#   card_id = fields.Nested('CardSchema')
+  @validates('email')
+  def validate_email(self, key, email):
+    # Make sure email address contains @ character
+    assert '@' in email
 
-  # @validates('email')
-  # def validate_email(self, key, email):
-  #   # Make sure email address contains @ character
-  #   assert '@' in email
+    return email
 
-  #   return email
+  @validates('password')
+  def validate_password(self, key, password):
+    assert len(password) > 4
 
-  # @validates('password')
-  # def validate_password(self, key, password):
-  #   assert len(password) > 4
+    # Encrypt password
+    return bcrypt.hashpw(password.encode('utf-8'), salt)
 
-  #   # Encrypt password
-  #   return bcrypt.hashpw(password.encode('utf-8'), salt)
-
-  # def verify_password(self, password):
-  #   return bcrypt.checkpw(
-  #     password.encode('utf-8'),
-  #     self.password.encode('utf-8')
-  #   )
+  def verify_password(self, password):
+    return bcrypt.checkpw(
+      password.encode('utf-8'),
+      self.password.encode('utf-8')
+    )

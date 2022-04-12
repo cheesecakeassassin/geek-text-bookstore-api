@@ -2,6 +2,8 @@ from flask import Blueprint, request, jsonify, session
 from app.models import User, Card
 from app.db import get_db
 import sys
+
+# Uses /api endpoint for all of these api routes
 bp = Blueprint('api', __name__, url_prefix='/api')
 
 # Get all users
@@ -77,10 +79,7 @@ def add_user():
     db.rollback()
     return jsonify(message = 'Add user failed'), 500
 
-  session.clear()
-  session['user_id'] = newUser.id
-  session['loggedIn'] = True
-  return jsonify(id = newUser.id, name = newUser.name, username = newUser.username, email = newUser.email, home_address = newUser.home_address, password = newUser.password)
+  return jsonify(message = "Successfully created user",id = newUser.id, name = newUser.name, username = newUser.username, email = newUser.email, home_address = newUser.home_address, password = newUser.password)
 
 
 # Update user by id
@@ -104,9 +103,6 @@ def update_user(id):
 
   return '', 204
 
-
-# Remove session variables
-# session.clear()
 
 # Get all cards
 @bp.route('/cards')
