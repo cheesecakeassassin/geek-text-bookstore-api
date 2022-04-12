@@ -265,11 +265,4 @@ db.add_all([
 
 db.commit()
 
-# Insert users
-db.add_all([
-  User(name='Harold', username='alesmonde0', email='nwestnedge0@cbc.ca', password='password123'),
-])
-
-db.commit()
-
 db.close()
