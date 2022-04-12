@@ -1,1 +1,54 @@
-# group18-bookstore-api
+# 📖 Bookstore API! 📖
+  [![License: IPL 1.0](https://img.shields.io/badge/License-IPL_1.0-blue.svg)](https://opensource.org/licenses/IPL-1.0)
+  ## Description
+  
+This bookstore API is .
+
+## Technologies Used
+
+* Python (programming language)
+* Flask (Python API framework)
+* SQLAlchemy/MySQL (database)
+* HTML (rendering admin pages)
+* Bootstrap (CSS framework for styling html)
+
+  ## Table of Contents
+
+  * [Installation](#installation)
+  * [Usage](#usage)
+  * [Contributing](#contributing)
+  * [License Info](#license-info)
+
+
+  ### Installation
+  
+  * Open a terminal, head to the desired destination folder and type ```git clone git@github.com:cheesecakeassassin/group18-bookstore-api.git```
+  * Run ```cd group18-bookstore-api``` to enter the repository
+  * Run ```venv/Scripts/activate``` for Windows and ```source venv/bin/activate``` for MacOS to enter a virtual environment to then install the dependencies.
+  * Run ```pip install flask```, ```pip install flask_admin```, ```pip install flask_login```, ```pip install bcrypt```, ```pip install sqlalchemy```, ```pip install sqlalchemy_serializer```, and ```pip install dotenv``` to install all the needed dependencies.
+  * Run ```mysql -u root -p``` to enter the MySQL shell, then enter your MySQL password(MySQL must be downloaded on your machine).
+  * Run ```source app/db/schema.sql``` to select the database followed by ```exit``` to exit the MySQL shell.
+  * Run ```python seeds.py``` to seed the books.
+  * Finally, run ```python -m flask run``` to open the development sever and get to work!
+
+  ### Usage
+
+  * Just dive in on ```Postman``` or ```Insomnia``` and enjoy! For admin actions go to ```/admins/``` endpoint to register/login!
+
+  ### License Info
+  * [IBM License](https://opensource.org/licenses/IPL-1.0)
+  * The IPL is the open-source license IBM uses for some of its software. Supposed to facilitate commercial use of said software; is very clear on the specifics of liability. Also grants explicit patent rights.
+  
+  ### Contributing
+
+  * [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](code_of_conduct.md)
+  * Sasha Scanell GitHub: https://github.com/thedinoinstitute
+  * Thamare Saint Louis
+  * Camilo Sanchez GitHub: https://github.com/puesyo
+  * Karim Salazar 
+  * Fernando Santamarta GitHub: https://github.com/fernandosantamarta
+  * Sebastian Santa GitHub: https://github.com/cheesecakeassassin  
+
+  ### Further Questions?
+
+  * If you have further questions, feel free to email one of us at one of the following addresss & we will get back to you as soon as we can: santasebastian@yahoo.com
