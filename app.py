@@ -23,6 +23,14 @@ wishList = db.Table('wishlist',
 
                     )
 
+# CREATE A SHOPPING CART TABLE
+shoppingcart = db.Table('shoppingcart',
+                        db.Column('user_name', db.String,
+                                  db.ForeignKey('user.name')),
+                        db.Column('book_id', db.Integer,
+                                  db.ForeignKey('book.id'))
+                        )
+
 
 # CREATE THE SQLALCHEMY BOOK MODEL
 class Book(db.Model):
@@ -257,6 +265,8 @@ class User(db.Model):
     password = db.Column(db.String(40))
     wishList = db.relationship(
         'Book', secondary=wishList, backref='inWishList')
+    shoppingcart = db.relationship(
+        'Book', secondary=shoppingcart, backref='inShoppingCart')
 
     # review = db.relationship(
     #    'Rating', secondary=reviewList, backref='inWishList')
@@ -337,10 +347,21 @@ def create_wish_list(userName):
     user.wishList.append(book)
     # Save the wish list into the DB
     db.session.commit()
-
     # Return the wish list as json
+    result = book_dict(book)
+    return json.dumps(result)
+
+
+# LIST OF BOOKS IN A USER'S WISH LIST
+@app.route('/wishList/<userName>', methods=['GET'])
+def get_wishlist(userName):
+    # Get the user from the DB
+    user = User.query.filter_by(name=userName).first()
+    # Get the list of books
+    userList = user.wishList
     wishList = []
-    for book in user.wishList:
+    # Return the wish list as json
+    for book in userList:
         result = book_dict(book)
         wishList.append(result)
     result = json.dumps(wishList)
@@ -358,8 +379,8 @@ def move_to_hopping_cart(userName):
     book = Book.query.get(bookID)
     # Remove book from the wish list
     user.wishList.remove(book)
-    ######### Send book to shopping cart #########
-    ######### user.shoppingCart.append(book) #####
+    # Send book to shopping cart
+    user.shoppingcart.append(book)
     # Save the wish list into the DB
     db.session.commit()
     # Return book removed from wish list
@@ -367,20 +388,21 @@ def move_to_hopping_cart(userName):
     return json.dumps(my_book)
 
 
-# LIST OF BOOKS IN A USER'S WISH LIST
-@app.route('/wishList/<userName>', methods=['GET'])
-def get_wishlist(userName):
+# DISPLAY A USER'S SHOPPINGCART
+@app.route('/shoppingcart/<userName>', methods=['GET'])
+def get_shoppingcart(userName):
     # Get the user from the DB
     user = User.query.filter_by(name=userName).first()
     # Get the list of books
-    userList = user.wishList
-    wishList = []
+    shoppingCartList = user.shoppingcart
+    shoppingCart = []
     # Return the wish list as json
-    for book in userList:
+    for book in shoppingCartList:
         result = book_dict(book)
-        wishList.append(result)
-    result = json.dumps(wishList)
+        shoppingCart.append(result)
+    result = json.dumps(shoppingCart)
     return result
+
 
 # Must be able to create a wishlist of books that belongs to user and has a unique name
 # Must be able to add a book to a user’s wishlisht
