@@ -1,0 +1,131 @@
+{
+    "authors": 
+    [
+    {
+        "name": "Louisa May Alcott",
+        "biography": "Louisa May Alcott was born in Germantown, Pennsylvania on November 29, 1832. She and her three sisters, Anna, Elizabeth and May were educated by their father, philosopher/ teacher, Bronson Alcott and raised on the practical Christianity of their mother, Abigail May.",
+        "publisher": "Barnes & Noble"
+
+    },
+    {
+        "name": "Mary Shelley",
+        "biography": "Mary Shelley was an English novelist, short story writer, dramatist, essayist, biographer, travel writer, and editor of the works of her husband, Romantic poet and philosopher Percy Bysshe Shelley. She was the daughter of the political philosopher William Godwin and the writer, philosopher, and feminist Mary Wollstonecraft.",
+        "publisher": "Penguin Publishing Group"
+
+    },
+    {
+        "name": "Oscar Wilde",
+        "biography": "Oscar Fingal O'Flahertie Wills Wilde was an Irish playwright, poet, and author of numerous short stories, and one novel. Known for his biting wit, and a plentitude of aphorisms, he became one of the most successful playwrights of the late Victorian era in London, and one of the greatest celebrities of his day. Several of his plays continue to be widely performed, especially The Importance of Being Earnest.",
+        "publisher": "Barnes & Noble"
+
+    },
+    {
+        "name": "Emily Bronte",
+        "biography": "Emily Jane Brontë was a British novelist and poet, now best remembered for her only novel Wuthering Heights, a classic of English literature. Emily was the second eldest of the three surviving Brontë sisters, being younger than Charlotte Brontë and older than Anne Brontë. She published under the masculine pen name Ellis Bell.",
+        "publisher": "Penguin Publishing Group"
+
+    },
+    {
+        "name": "Robert Louis Stevenson",
+        "biography": "Robert Louis Balfour Stevenson was a Scottish novelist, poet, and travel writer, and a leading representative of English literature. He was greatly admired by many authors, including Jorge Luis Borges, Ernest Hemingway, Rudyard Kipling and Vladimir Nabokov.",
+        "publisher": "Barnes & Noble"
+
+    },
+    {
+        "name": "Ray Bradbury",
+        "biography": "Ray Douglas Bradbury, American novelist, short story writer, essayist, playwright, screenwriter and poet, was born August 22, 1920 in Waukegan, Illinois. He graduated from a Los Angeles high school in 1938. Although his formal education ended there, he became a \"student of life,\" selling newspapers on L.A. street corners from 1938 to 1942, spending his nights in the public library and his days at the typewriter. He became a full-time writer in 1943, and contributed numerous short stories to periodicals before publishing a collection of them, Dark Carnival, in 1947.",
+        "publisher": "Simon & Schuster"
+
+    },
+    {
+        "name": "Lewis Carroll",
+        "biography": "The Reverend Charles Lutwidge Dodgson, better known by the pen name Lewis Carroll, was an English author, mathematician, logician, Anglican clergyman and photographer. His most famous writings are Alice's Adventures in Wonderland and its sequel Through the Looking-Glass as well as the poems \"The Hunting of the Snark\" and \"Jabberwocky\", all considered to be within the genre of literary nonsense.",
+        "publisher": "CreateSpace Publishing"
+
+    },
+    {
+        "name": "J.M. Barrie",
+        "biography": "Sir James Matthew Barrie, 1st Baronet, OM was a Scottish author and dramatist, best remembered today as the creator of Peter Pan.",
+        "publisher": "Henry Holt and Co."
+
+    },
+    {
+        "name": "Madeleine L'Engle",
+        "biography": "Madeleine L'Engle was an American writer best known for her young adult fiction, particularly the Newbery Medal-winning A Wrinkle in Time and its sequels A Wind in the Door, A Swiftly Tilting Planet, and Many Waters. Her works reflect her strong interest in modern science: tesseracts, for example, are featured prominently in A Wrinkle in Time, mitochondrial DNA in A Wind in the Door, organ regeneration in The Arm of the Starfish, and so forth.",
+        "publisher": "Square Fish"
+
+    },
+    {
+        "name": "L. Frank Baum",
+        "biography": "Lyman Frank Baum was an American author, actor, and independent filmmaker best known as the creator, along with illustrator W. W. Denslow, of one of the most popular books in American children's literature, The Wonderful Wizard of Oz, better known today as simply The Wizard of Oz.",
+        "publisher": "Penguin Publishing Group"
+
+    },
+    {
+        "name": "Carolyn Keene",
+        "biography": "Carolyn Keene is a writer pen name that was used by many different people- both men and women- over the years. The company that was the creator of the Nancy Drew series, the Stratemeyer Syndicate, hired a variety of writers. For Nancy Drew, the writers used the pseudonym Carolyn Keene to assure anonymity of the creator.",
+        "publisher": "Applewood Books"
+
+    },
+    {
+        "name": "Truman Capote",
+        "biography": "Truman Capote was an American writer whose non-fiction, stories, novels and plays are recognised literary classics, including the novella Breakfast at Tiffany's (1958) and In Cold Blood (1965), which he labeled a \"non-fiction novel.\" At least 20 films and TV dramas have been produced from Capote novels, stories and screenplays.",
+        "publisher": "Knopf Doubleday Publishing Group"
+
+    },
+    {
+        "name": "Erik Larson",
+        "biography": "Erik is a former features writer for The Wall Street Journal and Time. His magazine stories have appeared in The New Yorker, The Atlantic Monthly, Harper's and other publications.",
+        "publisher": "Crown Publishers"
+
+    },
+    {
+        "name": "Vincent Bugliosi, Curt Gentry",
+        "biography": "American attorney and author, best known for prosecuting Charles Manson and his followers for the murder of Sharon Tate and others.",
+        "publisher": "W.W. Norton Company"
+
+    },
+    {
+        "name": "Robert Graysmith",
+        "biography": "ROBERT GRAYSMITH is the New York Times Bestselling author and illustrator of Zodiac , Auto Focus , and Black Fire . He was the political cartoonist for the San Francisco Chronicle when the letters and cryptograms from the infamous Zodiac killer were opened in the morning editorial meetings. He lives in San Francisco where he continues to write and illustrate.",
+        "publisher": "Penguin Publishing Group"
+
+    },
+    {
+        "name": "Jeff Guinn",
+        "biography": "Jeff Guinn is a former journalist, who has won national, regional and state awards for investigative reporting, feature writing, and literary criticism.",
+        "publisher": "Simon & Schuster"
+
+    },
+    {
+        "name": "Patricia Highsmith",
+        "biography": "Patricia Highsmith was an American novelist who is known mainly for her psychological crime thrillers which have led to more than two dozen film adaptations over the years.",
+        "publisher": "W.W. Norton Company"
+
+    },
+    {
+        "name": "Agatha Christie",
+        "biography": "Agatha Christie is the best-selling author of all time. She wrote 66 crime novels and story collections, fourteen plays, and six novels under a pseudonym in Romance. Her books have sold over a billion copies in the English language and a billion in translation. According to Index Translationum, she remains the most-translated individual author, having been translated into at least 103 languages.",
+        "publisher": "HarperCollins"
+
+    },
+    {
+        "name": "Stephen King",
+        "biography": "Stephen Edwin King (born September 21, 1947) is an American author of horror, supernatural fiction, suspense, crime, science-fiction, and fantasy novels. Described as the \"King of Horror\", a play on his surname and a reference to his high standing in pop culture, his books have sold more than 350 million copies, and many have been adapted into films, television series, miniseries, and comic books.",
+        "publisher": "New English Library"
+
+    },
+    {
+        "name": "Gillian Flynn",
+        "biography": "Gillian Flynn is an American author and television critic for Entertainment Weekly. She has so far written three novels, Sharp Objects, for which she won the 2007 Ian Fleming Steel Dagger for the best thriller; Dark Places; and her best-selling third novel Gone Girl.",
+        "publisher": "Random House Publishing Group"
+
+    },
+    {
+        "name": "Thomas Harris",
+        "biography": "Gillian Flynn is an American author and television critic for Entertainment Weekly. She has so far written three novels, Sharp Objects, for which she won the 2007 Ian Fleming Steel Dagger for the best thriller; Dark Places; and her best-selling third novel Gone Girl.",
+        "publisher": "St. Martin's Publishing Group"
+
+    }
+    ]
+}
