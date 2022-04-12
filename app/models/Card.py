@@ -16,9 +16,9 @@ class Card(Base, SerializerMixin):
   security_code = Column(Integer, nullable=False)
   zip_code = Column(Integer, nullable=False)
   user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
-  ForeignKeyConstraint(['user_id'], ['users.id'])
 
-  user = relationship('User')
+
+  # user = relationship('User')
 
 # class CardSchema(Schema):
 #     name = fields.Str()
