@@ -9,14 +9,8 @@ from wtforms.validators import InputRequired, Length, ValidationError
 from flask_admin.contrib.sqla import ModelView
 import bcrypt
 
-bp = Blueprint('admin', __name__, url_prefix='/admin')
+bp = Blueprint('admins', __name__, url_prefix='/admins')
 salt = bcrypt.gensalt()
-
-# db2 = get_db
-
-# admin = Admin(bp, name='microblog', template_mode='bootstrap3')
-# admin.add_view(ModelView(AdminUser, db2))
-# admin.add_view(ModelView(Book, db2))
     
 class RegisterForm(FlaskForm):
     username = StringField(validators=[InputRequired(), Length(
@@ -29,7 +23,7 @@ class RegisterForm(FlaskForm):
 
     def validate_username(self, username):
         db = get_db()
-        existing_admin_username = db.query(Book).filter_by(username = username).first()
+        existing_admin_username = db.query(AdminUser).filter_by(username = username).first()
 
         if existing_admin_username:
             raise ValidationError(
@@ -57,7 +51,7 @@ def login():
         db = get_db();
         user = db.query(AdminUser).filter_by(username=form.username.data).first()
         if user:
-            if bcrypt.checkpw(user.password, form.password.data):
+            if bcrypt.checkpw(form.password.data.encode('utf-8'), user.password.encode('utf-8')):
                 login_user(user)
                 return redirect(url_for('admin.index'))
         else:
@@ -74,11 +68,13 @@ def register():
     form = RegisterForm()
 
     if form.validate_on_submit():
+        db = get_db();
         hashed_password = bcrypt.hashpw(form.password.data.encode('utf-8'), salt)
+        print(hashed_password)
         new_admin = AdminUser(username=form.username.data, password=hashed_password)
-        db.session.add(new_admin)
-        db.session.commit()
-        return redirect(url_for('login'))
+        db.add(new_admin)
+        db.commit()
+        return redirect(url_for('admins.login'))
 
     return render_template('register.html', form = form)
 

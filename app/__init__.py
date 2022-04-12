@@ -33,7 +33,7 @@ def create_app(test_config=None):
 
     db = get_db()
 
-    adminb = Admin(app, name='microblog', template_mode='bootstrap3')
+    adminb = Admin(app, name='Bookstore API', template_mode='bootstrap3')
     adminb.add_view(ModelView(AdminUser, db))
     adminb.add_view(ModelView(Book, db))
 
