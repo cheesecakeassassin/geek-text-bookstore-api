@@ -47,7 +47,7 @@ This bookstore API is powered by Python's Flask framework. You have the ability 
   ### Contributing
 
   * [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](code_of_conduct.md)
-  * Sasha Scanell GitHub: https://github.com/thedinoinstitute
+  * Sasha Scannell GitHub: https://github.com/thedinoinstitute
   * Thamare Saint Louis Github: https://github.com/thamare1
   * Camilo Sanchez GitHub: https://github.com/puesyo
   * Karim Salazar GitHub: https://github.com/ksala046
