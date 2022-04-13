@@ -6,13 +6,13 @@ from sqlalchemy import Boolean, Column, Integer
 # INSTANTIATE APP
 app = Flask(__name__)
 
-
 # DETERMINE THE DATABASE
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # INSTANTIATE THE DATABASE MODEL
 db = SQLAlchemy(app)
+
 
 # CREATE A WISH LIST (ASSOCIATION TABLE - MANY TO MANY RELATIONSHIP)
 wishList = db.Table('wishlist',
@@ -21,19 +21,12 @@ wishList = db.Table('wishlist',
                     db.Column('book_id', db.Integer, db.ForeignKey('book.id'))
                     )
 
-
-
-
-
-
 # CREATE A REVIEW LIST (ASSOCIATION TABLE - MANY TO MANY RELATIONSHIP)
 bookReview = db.Table('bookReview',
                     db.Column('book_id', db.String, 
                             db.ForeignKey('book.id')),
                     db.Column('review_id', db.Integer, db.ForeignKey('review.id'))
                     )
-
-
 
 
 
@@ -53,6 +46,8 @@ class Book(db.Model):
     description = db.Column(db.String(200))
     soldCopies = db.Column(db.Integer())
     #wishList_ID = db.Column(db.Integer, db.ForeingKey('wishList.id'))
+    bookReview = db.relationship(
+       'Review', secondary=bookReview, backref='inReview')
 
     # isTopSeller = db.Column(db.Boolean, default=False, server_default="false")
 
@@ -85,6 +80,18 @@ def book_dict(new_book):
         "soldCopies": new_book.soldCopies
     }
     return book
+
+# FUNCTION TO RETURN A BOOK DICTIONARY
+def review_dict(new_review):
+    review = {
+        "id": new_review.id,
+        "rating": new_review.rating,
+        "comment": new_review.comment
+    #    "userName": new_book.userName,
+    #    "bookId": new_book.ratingbookId,
+    #    "bookReview": new_book.bookReview,
+    }
+    return review
 
 
 # CREATE A BOOK
@@ -224,17 +231,40 @@ def get_top_sellers():
 @app.route('/BookRating', methods=['POST'])
 # Select a list of books with sales grater than 1000
 def get_book_by_rating():
-    ratingPicked = request.json['rating']
-    books = Book.query.all()
-    reviewList = []
-    for book in books:
-        if book.rating >= ratingPicked:
-            all_books = book_dict(book)
-            reviewList.append(all_books)
+    # ratingPicked = request.json['rating']
+    # books = Book.query.all()
+    # reviewList = []
+    # for book in books:
+    #    if book.rating >= ratingPicked:
+    #       all_books = book_dict(book)
+    #        reviewList.append(all_books)
+    reviewList = reviewList.query.all()
+    finalList = []
     reviewList = sorted(reviewList, key=lambda x: x['rating'])
-    result = json.dumps(reviewList)
+    for review in reviewList:
+           all_reviews = review_dict(book)
+           finalList.append(all_reviews)
+    result = json.dumps(finalList)
     return result
 
+
+# GET BOOKS BY RATING AND AVERAGE
+@app.route('/BookRating', methods=['POST'])
+# Select a list of books with sales grater than 1000
+def get_book_by_rating_average():
+    reviewList = reviewList.query.all()
+    averageRating = []
+    reviewList = sorted(averageRating, key=lambda x: x['rating'])
+    for averageRating in reviewList:
+           all_reviews = review_dict(book)
+           averageRating.append(all_reviews)
+    result = json.dumps(averageRating)
+    return result
+
+
+#sort a list of varaibeles reviews, use query, store in a variable (list), find rating of each object, variable.rating
+#inside loop sort
+#find an average function
 
 # GET BOOKS BY POSITION IN THE RECORD SET
 # (in POSTMAN, inside the POST body use 'record' as key and any value
@@ -398,9 +428,7 @@ def get_wishlist(userName):
 # Must be able to list the book’s in a user’s wishlist
 
 
-# RUN SERVER
-if __name__ == '__main__':
-    app.run(debug=True)
+
 
 
 
@@ -423,31 +451,31 @@ class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     rating = db.Column(db.String(40))
     comment = db.Column(db.String(50))
-    userName = db.Column(db.String(40))
-    bookId = db.Column(db.String(40))
-    bookReview = db.relationship(
-        'Book', secondary=bookReview, backref='inBook')
+  # userName = db.Column(db.String(40))
+  # bookId = db.Column(db.String(40))
+  #  bookReview = db.relationship(
+  #      'Book', secondary=bookReview, backref='inBook')
 
     
-    def __init__(self, rating, comment, userName, bookId, bookReview):
+    def __init__(self, rating, comment):
         self.rating = rating
         self.comment = comment
-        self.userName = userName
-        self.bookId = bookId
-        self.bookReview = bookReview
+    #    self.userName = userName
+    #    self.bookId = bookId
+    #    self.bookReview = bookReview
 
 
 # FUNCTION TO RETURN A BOOK DICTIONARY
-def book_dict(new_book):
-    book = {
-        "id": new_book.id,
-        "rating": new_book.rating,
-        "comment": new_book.comment,
-        "userName": new_book.userName,
-        "bookId": new_book.ratingbookId,
-        "bookReview": new_book.bookReview,
-    }
-    return book
+#def review_dict(new_review):
+ #   review = {
+  #      "id": new_review.id,
+   #     "rating": new_review.rating,
+    #    "comment": new_review.comment
+    #    "userName": new_book.userName,
+    #    "bookId": new_book.ratingbookId,
+    #    "bookReview": new_book.bookReview,
+    #}
+    #return review
 
 
 # ADD A BOOK TO THE REVIEW'S RRATING AND COMMENTING
@@ -455,60 +483,66 @@ def book_dict(new_book):
 def create_bookReview_input(userName):
     # Get the ID from the book's json data passed in the POST request ("id": "#")
     bookID = request.json['id']
+    rating = request.json['rating']
+    comment = request.json['comment']
     # Get the user from the DB
-    user = User.query.filter_by(name=userName).first()
+    # user = User.query.filter_by(name=userName).first()
     # Get the book from the DB
     book = Book.query.get(bookID)
+    review = Review(rating = rating, comment = comment)
     # Add book to the user's book review
-    user.reviewList.append(book)
+    book.bookReview.append(review)
     # Save the user's book rating into the DB
     db.session.commit()
 
     # Return the user's book review as json
     reviewList = []
-    for book in user.reviewList:
-        result = book_dict(book)
+    for book in book.bookReview:
+        result = review_dict(book)
         reviewList.append(result)
     result = json.dumps(reviewList)
     return result
 
 
 # REMOVE A USER BOOK REVIEW AND DELTE IT FROM BOOK PAGE
-@app.route('/reviewList/<userName>', methods=['DELETE'])
-def move_to_bookReview(userName):
+#@app.route('/reviewList/<userName>', methods=['DELETE'])
+#def move_to_bookReview(userName):
     # Get the ID from the book's json data passed in the POST request ("id": "#")
-    bookID = request.json['id']
+#    bookID = request.json['id']
     # Get the user from the DB
-    user = User.query.filter_by(name=userName).first()
+#    user = User.query.filter_by(name=userName).first()
     # Get the book from the DB
-    book = Book.query.get(bookID)
+#    book = Book.query.get(bookID)
     # Remove review from the user bookReview
-    user.reviewList.remove(book)
+#    user.reviewList.remove(book)
     # Save the user book review into the DB
-    db.session.commit()
+#    db.session.commit()
     # Send book review to bppl page
     # ________________________________
     # Return book review removed from user
-    my_book = book_dict(book)
-    return json.dumps(my_book)
+#    my_book = book_dict(book)
+#    return json.dumps(my_book)
 
 
 
 # LIST OF BOOKS IN A USER'S BOOK REVIEW
-@app.route('/reviewList/<userName>', methods=['GET'])
-def get_reviewList(userName):
+#@app.route('/reviewList/<userName>', methods=['GET'])
+#def get_reviewList(userName):
     # Get the user from the DB
-    user = User.query.filter_by(name=userName).first()
+#    user = User.query.filter_by(name=userName).first()
     # Get the list of books
-    reviewList = user.reviewList
-    reviewList = []
+#    reviewList = user.reviewList
+#    reviewList = []
     # Return the user's book review as json
-    for book in reviewList:
-        result = book_dict(book)
-        reviewList.append(result)
-    result = json.dumps(reviewList)
-    return result
+#    for book in reviewList:
+#        result = book_dict(book)
+#        reviewList.append(result)
+#   result = json.dumps(reviewList)
+#    return result
 
+
+if __name__ == '__main__':
+    app.run(debug=True)
 
 
 
@@ -547,3 +581,7 @@ def get_reviewList(userName):
 
 # remove items from the list
 # monica.wishList.remove(book)
+
+
+
+
