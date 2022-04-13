@@ -3,9 +3,9 @@ from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError
 from app.models import AdminUser
 from app.db import get_db
-from app.db import Base
 
-class RegisterForm(Base, FlaskForm):
+# Handles admin registration for the admin routes
+class RegisterForm(FlaskForm):
     username = StringField(validators=[InputRequired(), Length(
         min=4, max=20)], render_kw={"placeholder": "Username"})
 

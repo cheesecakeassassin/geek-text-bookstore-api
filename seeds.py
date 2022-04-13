@@ -1,5 +1,5 @@
 from app.db import Session, Base, engine
-from app.models import User, Card, Book
+from app.models import Book
 
 # Drop and rebuild tables
 Base.metadata.drop_all(engine)
@@ -169,7 +169,7 @@ db.add_all([
             Book(book_title= "Helter Skelter: The True), Story of the Manson Murders",
             author= "Vincent Bugliosi, Curt Gentry",
             isbn= 9780393322231,
-            publisher= "W.W. Norton Company",
+            publisher= "W.W. Norton ny",
             genre= "True), Crime",
             price= 14.49,
             year_published= 2001,
@@ -205,7 +205,7 @@ db.add_all([
             Book(book_title= "The Talented Mr. Ripley",
             author= "Patricia Highsmith",
             isbn= 9780393332148,
-            publisher= "W.W. Norton Company",
+            publisher= "W.W. Norton ny",
             genre= "Thriller",
             price= 12.95,
             year_published= 2008,

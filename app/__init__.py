@@ -16,8 +16,9 @@ def create_app(test_config=None):
   app.config.from_mapping(
     SECRET_KEY='super_secret_key'
   )
+
   with app.app_context():
-    # Initialize basic auth
+    # Initialize basic auth for admin routes
     basic_auth = BasicAuth(app)
     app.config['BASIC_AUTH_USERNAME'] = 'sasha'
     app.config['BASIC_AUTH_PASSWORD'] = 'sasha'
@@ -26,7 +27,6 @@ def create_app(test_config=None):
     login_manager = LoginManager()
     login_manager.init_app(app)
     login_manager.login_view = "login"
-
     
     @login_manager.user_loader
     def load_user(admin_id):

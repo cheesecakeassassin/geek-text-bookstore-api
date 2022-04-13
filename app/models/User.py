@@ -4,32 +4,34 @@ from sqlalchemy.orm import relationship, validates
 from sqlalchemy_serializer import SerializerMixin
 import bcrypt
 
-# Generates salt used to hash password with bcrypt
+# Generates salt used to hash passwords with bcrypt
 salt = bcrypt.gensalt()
 
-# Create a wishlist (association table - many-to-many relationsip)
+# Create a wishlist (association table - many-to-many relationship)
 wishlist = Table('wishlist',
-    Column('username', String, ForeignKey('users.name')), 
+    Base.metadata,
+    Column('username', String(50), ForeignKey('users.username')), 
     Column('book_id', Integer, ForeignKey('books.id'))
 )
 
 # Create a shopping cart table
 shopping_cart = Table('shopping_cart',
-  Column('username', String, ForeignKey('users.name')),
+  Base.metadata,
+  Column('username', String(50), ForeignKey('users.username')),
   Column('book_id', Integer, ForeignKey('books.id'))
 )
 
-# User class that has a one-to-many relationship with Card class
+# User class that has a one-to-many relationship with Card class and many-to-many relationships with wishlist and cart
 class User(Base, SerializerMixin):
   __tablename__ = 'users'
   id = Column(Integer, primary_key=True)
   name = Column(String(50), nullable=True)
-  username = Column(String(50), nullable=False)
+  username = Column(String(50), nullable=False, unique=True)
   email = Column(String(50), nullable=True)
   home_address = Column(String(100), nullable=True)
   password = Column(String(100), nullable=False)
   cards = relationship('Card', cascade='all,delete,delete-orphan')
-  wishList = relationship('Book', secondary=wishlist, backref='in_wishlist')
+  wishlist = relationship('Book', secondary=wishlist, backref='in_wishlist')
   shopping_cart = relationship('Book', secondary=shopping_cart, backref='in_shopping_cart')
 
   # Validation functions

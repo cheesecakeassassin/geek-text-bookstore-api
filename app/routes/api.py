@@ -83,7 +83,7 @@ def add_user():
     db.rollback()
     return jsonify(message = 'Add user failed'), 500
 
-  return jsonify(message = "Successfully created user",id = newUser.id, name = newUser.name, username = newUser.username, email = newUser.email, home_address = newUser.home_address, password = newUser.password)
+  return jsonify(message = "Successfully created user", id = newUser.id, name = newUser.name, username = newUser.username, email = newUser.email, home_address = newUser.home_address, password = newUser.password)
 
 
 # Update user by id
