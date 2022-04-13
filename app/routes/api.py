@@ -163,7 +163,7 @@ def get_wishlist(username):
   db = get_db()
 
   # Get the user from the DB
-  user = db.query(User).filter_by(name=username).first()
+  user = db.query(User).filter_by(username=username).first()
 
   # Get the list of books
   userList = user.wishlist
@@ -185,7 +185,7 @@ def create_wishlist(username):
   data = request.get_json()
 
   # Get the user and book from the DB
-  user = db.query(User).filter_by(name=username).first()
+  user = db.query(User).filter_by(username=username).first()
   book = db.query(Book).get(data['id'])
 
   # Add book to the wish list
@@ -200,7 +200,7 @@ def create_wishlist(username):
   return jsonify(result)
 
 
-# REMOVE A BOOK FROM A WISH LIST AND SEND TO SHOPPING CART
+# Remove a book from given user's wishlist and send to shopping cart
 @bp.route('/wishlist/<username>', methods=['DELETE'])
 def move_to_hopping_cart(username):
   # Import database
@@ -208,7 +208,7 @@ def move_to_hopping_cart(username):
   data = request.get_json()
 
   # Get the user and book from the DB
-  user = db.query(User).filter_by(name=username).first()
+  user = db.query(User).filter_by(username=username).first()
   book = db.query(Book).get(data['id'])
 
   # Remove book from the wish list and send it to shopping cart
@@ -234,7 +234,7 @@ def get_shoppingcart(username):
   db = get_db()
 
   # Get the user from the DB
-  user = db.query(User).filter_by(name=username).first()
+  user = db.query(User).filter_by(username=username).first()
 
   # Get the list of books
   shopping_cart_list = user.shopping_cart
