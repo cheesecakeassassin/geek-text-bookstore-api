@@ -1,7 +1,7 @@
 from flask_login import UserMixin
 from app.db import Base
 from sqlalchemy_serializer import SerializerMixin
-from sqlalchemy import Column, ForeignKeyConstraint, BigInteger, Integer, String, Float, Boolean, ForeignKey
+from sqlalchemy import Column, BigInteger, Integer, String, Float, Boolean
 
 class Book(Base, UserMixin, SerializerMixin):
     __tablename__ = 'books'

@@ -1,13 +1,17 @@
 from flask import Blueprint, request, jsonify, session
-from app.models import User, Card
+from app.models import User, Card, Book
 from app.db import get_db
 import sys
 
 # Uses /api endpoint for all of these api routes
 bp = Blueprint('api', __name__, url_prefix='/api')
 
+###########################################################################
+############################# USER ROUTES #################################
+###########################################################################
+
 # Get all users
-@bp.route('/users')
+@bp.route('/users', methods=['GET'])
 def get_all_users():
   db = get_db()
   users = db.query(User).all()
@@ -20,7 +24,7 @@ def get_all_users():
 
 
 # Get user by id
-@bp.route('/users/<id>')
+@bp.route('/users/<id>', methods=['GET'])
 def get_user_by_id(id):
   db = get_db()
 
@@ -37,7 +41,7 @@ def get_user_by_id(id):
 
 
 # Get user by username
-@bp.route('/user/<username>')
+@bp.route('/user/<username>', methods=['GET'])
 def get_user_by_username(username):
   db = get_db()
 
@@ -103,9 +107,12 @@ def update_user(id):
 
   return '', 204
 
+###########################################################################
+############################ CARD ROUTES ##################################
+###########################################################################
 
 # Get all cards
-@bp.route('/cards')
+@bp.route('/cards', methods=['GET'])
 def get_all_cards():
   db = get_db()
   cards = db.query(Card).all()
@@ -144,3 +151,98 @@ def add_card():
     return jsonify(message = 'Add card failed'), 500
 
   return jsonify(id = newCard.id, name = newCard.name, expiration_date = newCard.expiration_date, card_number = newCard.card_number, security_code = newCard.security_code, zip_code = newCard.zip_code, user_id = newCard.user_id)
+
+###########################################################################
+########################## WISHLIST ROUTES ################################
+###########################################################################
+
+# Retrieve list of books from given user's wishlist
+@bp.route('/wishlist/<username>', methods=['GET'])
+def get_wishlist(username):
+  # Import database
+  db = get_db()
+
+  # Get the user from the DB
+  user = db.query(User).filter_by(name=username).first()
+
+  # Get the list of books
+  userList = user.wishlist
+  wishlist = []
+
+  # Return the wish list as json
+  for book in userList:
+    result = book.to_dict()
+    wishlist.append(result)
+
+  return jsonify(wishlist)
+    
+    
+ # Add book to given user's wishlist
+@bp.route('/wishlist/<username>', methods=['POST'])
+def create_wishlist(username):
+  # Import database
+  db = get_db()
+  data = request.get_json()
+
+  # Get the user and book from the DB
+  user = db.query(User).filter_by(name=username).first()
+  book = db.query(Book).get(data['id'])
+
+  # Add book to the wish list
+  user.wishlist.append(book)
+
+  # Save the wish list into the DB
+  db.commit()
+
+  # Return the wish list as json
+  result = book.to_dict()
+
+  return jsonify(result)
+
+
+# REMOVE A BOOK FROM A WISH LIST AND SEND TO SHOPPING CART
+@bp.route('/wishlist/<username>', methods=['DELETE'])
+def move_to_hopping_cart(username):
+  # Import database
+  db = get_db()
+  data = request.get_json()
+
+  # Get the user and book from the DB
+  user = db.query(User).filter_by(name=username).first()
+  book = db.query(Book).get(data['id'])
+
+  # Remove book from the wish list and send it to shopping cart
+  user.wishlist.remove(book)
+  user.shopping_cart.append(book)
+
+  # Save the wish list into the DB
+  db.commit()
+
+  # Return book removed from wish list
+  my_book = book.to_dict()
+
+  return jsonify(my_book)
+
+###########################################################################
+####################### SHOPPING CART ROUTES ##############################
+###########################################################################
+
+# Display given user's shopping cart
+@bp.route('/shopping-cart/<username>', methods=['GET'])
+def get_shoppingcart(username):
+  # Import database
+  db = get_db()
+
+  # Get the user from the DB
+  user = db.query(User).filter_by(name=username).first()
+
+  # Get the list of books
+  shopping_cart_list = user.shopping_cart
+  shopping_cart = []
+
+  # Return the wish list as json
+  for book in shopping_cart_list:
+    result = book.to_dict()
+    shopping_cart.append(result)
+
+  return jsonify(shopping_cart)

@@ -1,44 +1,14 @@
-from flask import Blueprint, render_template, url_for, redirect, current_app
-from app.models import AdminUser, Book
+from flask import Blueprint, render_template, url_for, redirect
+from app.models import AdminUser, LoginForm, RegisterForm
 from app.db import get_db
-from flask_admin import Admin
-from flask_login import login_user, LoginManager, login_required, logout_user
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import InputRequired, Length, ValidationError
-from flask_admin.contrib.sqla import ModelView
+from flask_login import login_user, login_required, logout_user
 import bcrypt
 
+# Uses /api endpoint for all of these api routes
 bp = Blueprint('admins', __name__, url_prefix='/admins')
+
+# Generates salt used to hash password with bcrypt
 salt = bcrypt.gensalt()
-    
-class RegisterForm(FlaskForm):
-    username = StringField(validators=[InputRequired(), Length(
-        min=4, max=20)], render_kw={"placeholder": "Username"})
-
-    password = PasswordField(validators=[InputRequired(), Length(
-        min=4, max=20)], render_kw={"placeholder": "Password"})
-
-    submit = SubmitField("Register")
-
-    def validate_username(self, username):
-        db = get_db()
-        existing_admin_username = db.query(AdminUser).filter_by(username = username).first()
-
-        if existing_admin_username:
-            raise ValidationError(
-                "That username already exists. Please choose a different one."
-            )
-
-class LoginForm(FlaskForm):
-    username = StringField(validators=[InputRequired(), Length(
-        min=4, max=20)], render_kw={"placeholder": "Username"})
-
-    password = PasswordField(validators=[InputRequired(), Length(
-        min=4, max=20)], render_kw={"placeholder": "Password"})
-
-    submit = SubmitField("Login")
-
 
 @bp.route('/')
 def home():

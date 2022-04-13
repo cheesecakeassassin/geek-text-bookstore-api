@@ -1,6 +1,5 @@
 from app.db import Base
-from sqlalchemy import BigInteger, Column, ForeignKeyConstraint, Integer, String, ForeignKey
-from sqlalchemy.orm import validates
+from sqlalchemy import BigInteger, Column, Integer, String, ForeignKey
 from sqlalchemy_serializer import SerializerMixin
 
 # Card class that includes a foreign key relationship with User class
