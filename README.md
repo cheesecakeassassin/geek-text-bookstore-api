@@ -1,1 +1,0 @@
-# group18-bookstore-api
