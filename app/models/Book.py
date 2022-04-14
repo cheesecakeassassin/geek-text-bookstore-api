@@ -1,7 +1,8 @@
 from flask_login import UserMixin
 from app.db import Base
 from sqlalchemy_serializer import SerializerMixin
-from sqlalchemy import Column, BigInteger, Integer, String, Float, Boolean
+from sqlalchemy import Column, BigInteger, ForeignKey, Integer, String, Float
+from sqlalchemy.orm import relationship
 
 class Book(Base, UserMixin, SerializerMixin):
     __tablename__ = 'books'
@@ -14,6 +15,5 @@ class Book(Base, UserMixin, SerializerMixin):
     price = Column(Float, nullable = False)
     year_published = Column(Integer, nullable = False)
     description = Column(String(200), nullable = False)
-    rating = Column(Integer, nullable = False)
     sold_copies = Column(Integer, nullable = False)
-    is_top_seller = Column(Boolean, default = False)
+    reviews = relationship('Review', backref='in_review')

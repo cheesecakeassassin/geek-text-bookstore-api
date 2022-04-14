@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
-from app.models import User, Card, Book
+from app.models import User, Card, Book, Review
+from datetime import datetime
 from app.db import get_db
 import sys
 
@@ -15,12 +16,12 @@ bp = Blueprint('api', __name__, url_prefix='/api')
 def get_all_users():
   db = get_db()
   users = db.query(User).all()
-  userList = []
+  user_list = []
   for user in users:
     all_users = user.to_dict()
-    userList.append(all_users)
+    user_list.append(all_users)
 
-  return jsonify(userList)
+  return jsonify(user_list)
 
 
 # Get user by id
@@ -65,7 +66,7 @@ def add_user():
   
   try:
     # Create a new user
-    newUser = User(
+    new_user = User(
       name = data['name'],
       username = data['username'],
       email = data['email'],
@@ -74,7 +75,7 @@ def add_user():
     )
 
     # Save in database
-    db.add(newUser)
+    db.add(new_user)
     db.commit()
   except:
     print(sys.exc_info()[0])
@@ -83,7 +84,7 @@ def add_user():
     db.rollback()
     return jsonify(message = 'Add user failed'), 500
 
-  return jsonify(message = "Successfully created user", id = newUser.id, name = newUser.name, username = newUser.username, email = newUser.email, home_address = newUser.home_address, password = newUser.password)
+  return jsonify(message = "Successfully created user", id = new_user.id, name = new_user.name, username = new_user.username, email = new_user.email, home_address = new_user.home_address, password = new_user.password)
 
 
 # Update user by id
@@ -94,9 +95,9 @@ def update_user(id):
 
   try:
     user = db.query(User).get(id)
-    user.name = data['name'],
-    user.username = data['username'],
-    user.home_address = data['home_address'],
+    user.name = data['name']
+    user.username = data['username']
+    user.home_address = data['home_address']
     user.password = data['password']
     db.commit()
   except:
@@ -105,7 +106,7 @@ def update_user(id):
     db.rollback()
     return jsonify(message = 'Invalid update (Note: email cannot be updated and other fields must be included)'), 404
 
-  return '', 204
+  return jsonify(message = "Successfully updated")
 
 ###########################################################################
 ############################ CARD ROUTES ##################################
@@ -116,12 +117,12 @@ def update_user(id):
 def get_all_cards():
   db = get_db()
   cards = db.query(Card).all()
-  cardList = []
+  card_list = []
   for card in cards:
     all_cards = card.to_dict()
-    cardList.append(all_cards)
+    card_list.append(all_cards)
 
-  return jsonify(cardList)
+  return jsonify(card_list)
 
 
 # Add card
@@ -131,7 +132,7 @@ def add_card():
   db = get_db()
   
   try:
-    newCard = Card(
+    new_card = Card(
       name = data['name'],
       card_number = data['card_number'],
       expiration_date = data['expiration_date'],
@@ -141,7 +142,7 @@ def add_card():
     )
 
     # Save in database
-    db.add(newCard)
+    db.add(new_card)
     db.commit()
   except:
     print(sys.exc_info()[0])
@@ -150,7 +151,7 @@ def add_card():
     db.rollback()
     return jsonify(message = 'Add card failed'), 500
 
-  return jsonify(id = newCard.id, name = newCard.name, expiration_date = newCard.expiration_date, card_number = newCard.card_number, security_code = newCard.security_code, zip_code = newCard.zip_code, user_id = newCard.user_id)
+  return jsonify(id = new_card.id, name = new_card.name, expiration_date = new_card.expiration_date, card_number = new_card.card_number, security_code = new_card.security_code, zip_code = new_card.zip_code, user_id = new_card.user_id)
 
 ###########################################################################
 ########################## WISHLIST ROUTES ################################
@@ -166,11 +167,11 @@ def get_wishlist(username):
   user = db.query(User).filter_by(username=username).first()
 
   # Get the list of books
-  userList = user.wishlist
+  user_list = user.wishlist
   wishlist = []
 
   # Return the wish list as json
-  for book in userList:
+  for book in user_list:
     result = book.to_dict()
     wishlist.append(result)
 
@@ -246,3 +247,234 @@ def get_shoppingcart(username):
     shopping_cart.append(result)
 
   return jsonify(shopping_cart)
+
+###########################################################################
+############################## BOOK ROUTES ################################
+###########################################################################
+
+# Create a book
+@bp.route('/book', methods=['POST'])
+def create_book():
+  # Import db
+  db = get_db()
+  data = request.get_json()
+
+  # Create a new book
+  new_book = Book(
+    book_title = data['book_title'],
+    genre = data['genre'],
+    author = data['author'],
+    rating = data['rating'],
+    isbn = data['isbn'],
+    publisher = data['publisher'],
+    price = data['price'],
+    year_published = data['year_published'],
+    description = data['description'],
+    sold_copies = data['sold_copies'],
+    is_top_seller = data['is_top_seller']
+  )
+  # Add book to the database
+  db.add(new_book)
+  db.commit()
+
+  # Store all the book data in a variable and return all that data
+  book = new_book.to_dict()
+
+  return jsonify(book)
+
+
+# Get all books
+@bp.route('/books', methods=['GET'])
+def get_books():
+  # Import db
+  db = get_db()
+
+  # Getting books
+  books = db.query(Book).all()
+  book_list = []
+
+  # Serializing every book individually
+  for book in books:
+    all_books = book.to_dict()
+    book_list.append(all_books)
+
+  return jsonify(book_list)
+
+
+# Get a single book
+@bp.route('/book/<id>', methods=['GET'])
+def book_details(id):
+  # Import db
+  db = get_db()
+  
+  # Querying book by id and serializing it
+  book = db.query(Book).get(id)
+  my_book = book.to_dict()
+
+  return jsonify(my_book)
+
+
+# Update a book
+@bp.route('/book/<id>', methods=['PUT'])
+def book_update(id):
+  # Import db
+  db = get_db()
+  data = request.get_json()
+
+  # Query book's id
+  book = db.query(Book).get(id)
+
+  # Update book with new data
+  book.book_title = data['book_title']
+  book.genre = data['genre']
+  book.author = data['author']
+  book.rating = data['rating']
+  book.isbn = data['isbn']
+  book.publisher = data['publisher']
+  book.price = data['price']
+  book.year_published = data['year_published']
+  book.description = data['description']
+  book.sold_copies = data['sold_copies']
+
+  # Add updated book to the database
+  db.commit()
+
+  return jsonify(message = "Successfully updated")
+
+
+# Delete a book
+@bp.route('/book/<id>', methods=['DELETE'])
+def delete_book(id):
+  # Import db
+  db = get_db()
+
+  book = db.query(Book).get(id)
+
+  db.delete(book)
+  db.commit()
+
+  result = "You deleted book " + id
+
+  return jsonify(message = result)
+
+###########################################################################
+####################  BROWSING AND SORTING ROUTES #########################
+###########################################################################
+
+# Get books by genre
+@bp.route('/books/<genre>', methods=['GET'])
+def get_books_by_genre(genre):
+  # Import db
+  db = get_db()
+
+  # Query books by genre
+  books = db.query(Book).filter_by(genre).all()
+  book_list = []
+
+  for book in books:
+    all_books = book.to_dict()
+    book_list.append(all_books)
+
+  return jsonify(book_list)
+
+
+# Get top sellers
+@bp.route('/top-seller-books', methods=['GET'])
+def get_top_sellers():
+  # Import db
+  db = get_db()
+
+  # Query all books
+  books = db.query(Book).all()
+
+  book_list = []
+  sorted_list = []
+    
+  for book in books:
+    all_books = book.to_dict()
+    book_list.append(all_books)
+
+  sorted_books = sorted(book_list, key=lambda x: x['soldCopies'], reverse=True)
+
+  # Display top 10 books
+  i = 0
+  for book in range(10):
+    sorted_list.append(sorted_books[i])
+    i += 1
+    print(i)
+    
+  return jsonify(sorted_list)
+
+
+# Get books for a particular rating or higher
+@bp.route('/books/rating/<rating>', methods=['GET'])
+def get_book_by_rating(rating):
+  # Import db
+  db = get_db()
+
+  # Query all books
+  books = db.query(Book).all()
+  books_by_rating = []
+
+  for book in books:
+    if book.rating >= rating:
+      all_books = book.to_dict()
+      books_by_rating.append(all_books)
+
+  return jsonify(books_by_rating)
+
+
+
+
+###########################################################################
+##################### RATING AND COMMENTING ROUTES ########################
+###########################################################################
+
+# Add user rating and comments to a book
+@bp.route('/review-list/<username>', methods=['POST'])
+def create_book_review_input(username):
+  # Import db
+  db = get_db()
+  data = request.get_json()
+
+  # Get the user from the DB
+  user = db.query(User).filter_by(username=username).first()
+
+  # Get the book from the DB
+  book = db.query(Book).get(data['id'])
+
+  # Create review
+  review = Review(
+    rating = data['rating'], 
+    comment = data['comment'],
+    username = username,
+    created_at = datetime.now
+  )
+  # Add book to the user's book review
+  book.reviews.append(review)
+
+  # Save the user's book rating into the DB
+  db.commit()
+
+  # Return the user's book review as json
+  review_list = []
+
+  for book_review in user.reviews:
+    all_reviews = book_review.to_dict()
+    review_list.append(all_reviews)
+
+  return jsonify(review_list)
+
+
+# GET BOOKS BY RATING AND AVERAGE
+@bp.route('/BookRating', methods=['POST'])
+# Select a list of books with sales grater than 1000
+def get_book_by_rating_average():
+    reviewList = reviewList.query.all()
+    averageRating = []
+    reviewList = sorted(averageRating, key=lambda x: x['rating'])
+    for averageRating in reviewList:
+           all_reviews = review_dict(book)
+           averageRating.append(all_reviews)
+    result = json.dumps(averageRating)
+    return result

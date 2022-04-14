@@ -33,6 +33,7 @@ class User(Base, SerializerMixin):
   cards = relationship('Card', cascade='all,delete,delete-orphan')
   wishlist = relationship('Book', secondary=wishlist, backref='in_wishlist')
   shopping_cart = relationship('Book', secondary=shopping_cart, backref='in_shopping_cart')
+  reviews = relationship('Review', backref='in_review')
 
   # Validation functions
   @validates('email')
