@@ -3,6 +3,7 @@ from datetime import datetime
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy_serializer import SerializerMixin
 
+# Review class that handles user ratings and comments for books
 class Review(Base, SerializerMixin):
     __tablename__ = 'reviews'
     id = Column(Integer, primary_key=True)
