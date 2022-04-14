@@ -2,7 +2,9 @@
   [![License: IPL 1.0](https://img.shields.io/badge/License-IPL_1.0-blue.svg)](https://opensource.org/licenses/IPL-1.0)
   ## Description
   
-This bookstore API is powered by Python's Flask framework. You have the ability to browse and sort books, manage a profile and its credit cards, add to a shopping cart, check book details and add books as an admin, rate books and comment on them, and add books to a wishlist. Created by the fellas over at Group 18. Enjoy!
+This bookstore API is powered by Python's Flask framework. You have the ability to browse and sort books, manage a profile and its credit cards, add to a shopping cart, check book details and add books as an admin, rate books and comment on them, and add books to a wishlist.
+
+Created by the fellas over at Group 18. Enjoy!
 
 
 ## Technologies Used
