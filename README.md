@@ -39,7 +39,7 @@ Created by the fellas over at Group 18. Enjoy!
 
   ### Usage
 
-  * Just dive in on ```Postman``` or ```Insomnia``` and enjoy! For admin actions go to ```/admins/``` endpoint to register/login!
+  * Just dive in on ```Postman``` or ```Insomnia``` to test the routes using the ```/api/``` endpoint! For admin actions use the ```/admins/``` endpoint to register/login!
 
 
   ### License Info
