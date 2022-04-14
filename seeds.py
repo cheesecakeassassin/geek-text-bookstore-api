@@ -8,12 +8,12 @@ Base.metadata.create_all(engine)
 db = Session()
 
 # Insert users
-     ## USER SEEDS HERE ##
+## USER SEEDS HERE ##
 
 db.commit()
 
 # Insert reviews
-     ## REVIEW SEEDS HERE ##
+## REVIEW SEEDS HERE ##
 
 db.commit()
 
