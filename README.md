@@ -33,7 +33,7 @@ Created by the fellas over at Group 18. Enjoy!
   * Create a ```.env``` file in the root directory with the following text: ```DB_URL=mysql+pymysql://root:<password>@localhost/bookstore_api_db``` replacing ```<password>``` with your MySQL password (MySQL must be downloaded on your machine).
   * Run ```mysql -u root -p``` to enter the MySQL shell, then enter your MySQL password.
   * Run ```source app/db/schema.sql``` to create the database followed by ```exit``` to exit the MySQL shell.
-  * Run ```python seeds.py``` to seed the books.
+  * Run ```python seeds.py``` to seed the database.
   * Finally, run ```python -m flask run``` to open the development sever and get to work!
 
 
