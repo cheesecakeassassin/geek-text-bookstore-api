@@ -264,14 +264,12 @@ def create_book():
     book_title = data['book_title'],
     genre = data['genre'],
     author = data['author'],
-    rating = data['rating'],
     isbn = data['isbn'],
     publisher = data['publisher'],
     price = data['price'],
     year_published = data['year_published'],
     description = data['description'],
-    sold_copies = data['sold_copies'],
-    is_top_seller = data['is_top_seller']
+    sold_copies = data['sold_copies']
   )
   # Add book to the database
   db.add(new_book)
@@ -424,14 +422,33 @@ def get_book_by_rating(rating):
   return jsonify(books_by_rating)
 
 
+# Get books by position in record set
+@bp.route('/books/return/<record>', methods=['GET'])
+# Return an X number of records
+def get_books_by_x_record(record):
+  # Import db
+  db = get_db()
 
+  books = db.query(Book).all()
+  book_list = []
+
+  i = 0
+  for book in books:
+    if i < record:
+      all_books = book.to_dict()
+      book_list.append(all_books)
+      i += 1
+    else:
+      break
+
+    return jsonify(book_list)
 
 ###########################################################################
 ##################### RATING AND COMMENTING ROUTES ########################
 ###########################################################################
 
 # Add user rating and comments to a book
-@bp.route('/review-list/<username>', methods=['POST'])
+@bp.route('/reviews/<username>', methods=['POST'])
 def create_book_review_input(username):
   # Import db
   db = get_db()
@@ -466,15 +483,39 @@ def create_book_review_input(username):
   return jsonify(review_list)
 
 
-# GET BOOKS BY RATING AND AVERAGE
-@bp.route('/BookRating', methods=['POST'])
-# Select a list of books with sales grater than 1000
-def get_book_by_rating_average():
-    reviewList = reviewList.query.all()
-    averageRating = []
-    reviewList = sorted(averageRating, key=lambda x: x['rating'])
-    for averageRating in reviewList:
-           all_reviews = review_dict(book)
-           averageRating.append(all_reviews)
-    result = json.dumps(averageRating)
-    return result
+# Get given book's average rating based on reviews
+@bp.route('/books/average/<id>', methods=['GET'])
+def get_book_by_rating_average(id):
+  # Import db
+  db = get_db()
+
+  # Query 
+  book = db.query(Book).get(id)
+
+  # Iterate through book's reviews to calculate average rating
+  counter = 0
+  rating_sum = 0
+  for review in book.reviews:
+    rating_sum += review.rating
+    counter += 1
+
+  average_rating = rating_sum / counter
+
+  return jsonify(average_rating = average_rating + " for book #" + id)
+
+
+# Get list of ratings/comments sorted by highest rating
+@bp.route('/reviews', methods=['GET'])
+def get_reviews_by_rating():
+  # Import db
+  db = get_db()
+
+  reviews = db.query(Review).all()
+  sorted_list = []
+
+  sorted_reviews = sorted(reviews, key=lambda x: x['rating'])
+  for review in sorted_reviews:
+    all_reviews = review.to_dict()
+    sorted_list.append(all_reviews)
+
+  return jsonify(sorted_list)
