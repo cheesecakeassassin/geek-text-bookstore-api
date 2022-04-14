@@ -47,14 +47,15 @@ This bookstore API is powered by Python's Flask framework. You have the ability 
   ### Contributing
 
   * [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](code_of_conduct.md)
-  * Sasha Scanell GitHub: https://github.com/thedinoinstitute
-  * Thamare Saint Louis
+  * Sasha Scannell GitHub: https://github.com/thedinoinstitute
+  * Thamare Saint Louis Github: https://github.com/thamare1
   * Camilo Sanchez GitHub: https://github.com/puesyo
-  * Karim Salazar 
+  * Karim Salazar GitHub: https://github.com/ksala046
   * Fernando Santamarta GitHub: https://github.com/fernandosantamarta
   * Sebastian Santa GitHub: https://github.com/cheesecakeassassin  
 
 
   ### Further Questions?
 
-  * If you have further questions, feel free to email one of us at one of the following addresss & we will get back to you as soon as we can: santasebastian@yahoo.com
+  * If you have further questions, feel free to email one of us at one of the following addresss & we will get back to you as soon as we can: santasebastian@yahoo.com, tsain024@fiu.edu, sasha3295@yahoo.com, ksala046@fiu.edu, fsanta076@fiu.edu, csanc236@fiu.edu
+
