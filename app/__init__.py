@@ -3,7 +3,7 @@ from app.db import init_db
 from app.routes import api as apiRoutes, admin as adminRoutes
 from flask_login import LoginManager
 from app.db import get_db
-from app.models import AdminUser, Book
+from app.models import AdminUser, Book, Author
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from flask_basicauth import BasicAuth
@@ -17,6 +17,7 @@ def create_app(test_config=None):
     SECRET_KEY='super_secret_key'
   )
 
+  # Just an extra layer of protection to make sure nothing runs out of context
   with app.app_context():
     # Initialize basic auth for admin routes
     basic_auth = BasicAuth(app)
@@ -37,9 +38,10 @@ def create_app(test_config=None):
     db = get_db()
 
     # Create admin dashboard using flask_admin import
-    admin = Admin(app, name='Bookstore API', template_mode='bootstrap3')
+    admin = Admin(app, name='Geek Text - Bookstore API', template_mode='bootstrap3')
     admin.add_view(ModelView(AdminUser, db))
     admin.add_view(ModelView(Book, db))
+    admin.add_view(ModelView(Author, db))
 
     # Register Blueprints
     app.register_blueprint(adminRoutes)

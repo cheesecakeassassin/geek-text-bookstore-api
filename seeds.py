@@ -1,5 +1,5 @@
 from app.db import Session, Base, engine
-from app.models import Book
+from app.models import Book, Author
 
 # Drop and rebuild tables
 Base.metadata.drop_all(engine)
@@ -218,6 +218,95 @@ db.add_all([
          year_published=1991,
          description="Hannibal Lecter. The ultimate villain of modern fiction. Read the five-million-copy bestseller that scared the world silent.",
          sold_copies=1250)
+])
+
+db.commit()
+
+# Insert authors
+db.add_all([
+    Author(name="Louisa May Alcott",
+           biography="Louisa May Alcott was born in Germantown, Pennsylvania on November 29, 1832. She and her three sisters, Anna, Elizabeth.",
+           publisher="Barnes & Noble"),
+
+    Author(name="Mary Shelley",
+           biography="Mary Shelley was an English novelist, short story writer, dramatist, essayist, biographer, travel writer.",
+           publisher="Penguin Publishing Group"),
+
+    Author(name="Oscar Wilde",
+           biography="Oscar Fingal O'Flahertie Wills Wilde was an Irish playwright, poet, and author of numerous short stories.",
+           publisher="Barnes & Noble"),
+
+    Author(name="Emily Bronte",
+           biography="Emily Jane Brontë was a British novelist and poet, now best remembered for her only novel Wuthering Heights.",
+           publisher="Penguin Publishing Group"),
+
+    Author(name="Robert Louis Stevenson",
+           biography="Robert Louis Balfour Stevenson was a Scottish novelist, poet, and travel writer, and a leading representative.",
+           publisher="Barnes & Noble"),
+
+    Author(name="Ray Bradbury",
+           biography="Ray Douglas Bradbury, American novelist, short story writer, essayist, playwright, screenwriter and poet.",
+           publisher="Simon & Schuster"),
+
+    Author(name="Lewis Carroll",
+           biography="The Reverend Charles Lutwidge Dodgson, better known by the pen name Lewis Carroll, was an English author.",
+           publisher="CreateSpace Publishing"),
+
+    Author(name="J.M. Barrie",
+           biography="Sir James Matthew Barrie, 1st Baronet, OM was a Scottish author and dramatist, best remembered today as the creator. of Peter Pan.",
+           publisher="Henry Holt and Co."),
+
+    Author(name="Madeleine L'Engle",
+           biography="Madeleine L'Engle was an American writer best known for her young adult fiction, particularly the Newbery Medal-winning.",
+           publisher="Square Fish"),
+
+    Author(name="L. Frank Baum",
+           biography="Lyman Frank Baum was an American author, actor, and independent filmmaker best known as the creator, along with illustrator.",
+           publisher="Penguin Publishing Group"),
+
+    Author(name="Carolyn Keene",
+           biography="Carolyn Keene is a writer pen name that was used by many different people- both men and women- over the years.",
+           publisher="Applewood Books"),
+
+    Author(name="Truman Capote",
+           biography="Truman Capote was an American writer whose non-fiction, stories, novels and plays are recognised literary classics.",
+           publisher="Knopf Doubleday Publishing Group"),
+
+    Author(name="Erik Larson",
+           biography="Erik is a former features writer for The Wall Street Journal and Time. His magazine stories have appeared in The New Yorker.",
+           publisher="Crown Publishers"),
+
+    Author(name="Vincent Bugliosi, Curt Gentry",
+           biography="American attorney and author, best known for prosecuting Charles Manson and his followers for the murder of Sharon Tate.",
+           publisher="W.W. Norton Company"),
+
+    Author(name="Robert Graysmith",
+           biography="ROBERT GRAYSMITH is the New York Times Bestselling author and illustrator of Zodiac , Auto Focus , and Black Fire.",
+           publisher="Penguin Publishing Group"),
+
+    Author(name="Jeff Guinn",
+           biography="Jeff Guinn is a former journalist, who has won national, regional and state awards for investigative reporting.",
+           publisher="Simon & Schuster"),
+
+    Author(name="Patricia Highsmith",
+           biography="Patricia Highsmith was an American novelist who is known mainly for her psychological crime thrillers.",
+           publisher="W.W. Norton Company"),
+
+    Author(name="Agatha Christie",
+           biography="Agatha Christie is the best-selling author of all time. She wrote 66 crime novels and story collections.",
+           publisher="HarperCollins"),
+
+    Author(name="Stephen King",
+           biography="Stephen Edwin King (born September 21, 1947) is an American author of horror, supernatural fiction, suspense.",
+           publisher="New English Library"),
+
+    Author(name="Gillian Flynn",
+           biography="Gillian Flynn is an American author and television critic for Entertainment Weekly. She has so far written.",
+           publisher="Random House Publishing Group"),
+
+    Author(name="Thomas Harris",
+           biography="Gillian Flynn is an American author and television critic for Entertainment Weekly. She has so far written.",
+           publisher="St. Martin's Publishing Group")
 ])
 
 db.commit()

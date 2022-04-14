@@ -9,9 +9,9 @@ salt = bcrypt.gensalt()
 
 # Create a wishlist (association table - many-to-many relationship)
 wishlist = Table('wishlist',
-    Base.metadata,
-    Column('username', String(50), ForeignKey('users.username')), 
-    Column('book_id', Integer, ForeignKey('books.id'))
+  Base.metadata,
+  Column('username', String(50), ForeignKey('users.username')), 
+  Column('book_id', Integer, ForeignKey('books.id'))
 )
 
 # Create a shopping cart table

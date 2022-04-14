@@ -10,10 +10,12 @@ bp = Blueprint('admins', __name__, url_prefix='/admins')
 # Generates salt used to hash password with bcrypt
 salt = bcrypt.gensalt()
 
+# Route for the homepage
 @bp.route('/')
 def home():
     return render_template('home.html')
 
+# Routes to login with username and password
 @bp.route('/login', methods = ['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -26,13 +28,14 @@ def login():
                 return redirect(url_for('admin.index'))
         else:
             return redirect (url_for('incorrect'))
-            return render_template ('incorrect.html')
     return render_template('login.html', form = form)
 
+# Routes for incorrect login information
 @bp.route('/incorrect', methods = ['GET', 'POST'])
 def incorrect():
     return render_template ('incorrect.html')
 
+# Routes for registering a new admin user
 @bp.route('/register', methods = ['GET', 'POST'])
 def register():
     form = RegisterForm()
@@ -48,11 +51,13 @@ def register():
 
     return render_template('register.html', form = form)
 
+# Routes to enter the dashboard
 @bp.route('/dashboard', methods = ['GET', 'POST'])
 @login_required
 def dashboard():
     return render_template('dashboard.html')
 
+# Routes to logout
 @bp.route('/logout', methods = ['GET', 'POST'])
 @login_required
 def logout():
