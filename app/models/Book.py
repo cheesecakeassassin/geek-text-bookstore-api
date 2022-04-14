@@ -8,7 +8,7 @@ from sqlalchemy.orm import relationship
 class Book(Base, UserMixin, SerializerMixin):
     __tablename__ = 'books'
     id = Column(Integer,primary_key=True)
-    book_title = Column(String(60), nullable = False, unique = True)
+    title = Column(String(60), nullable = False, unique = True)
     isbn = Column(BigInteger, nullable = False, unique = True)
     author = Column(String(30), nullable = False)
     publisher = Column(String(40), nullable = False)

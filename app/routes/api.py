@@ -269,7 +269,7 @@ def create_book():
 
   # Create a new book
   new_book = Book(
-    book_title = data['book_title'],
+    title = data['title'],
     genre = data['genre'],
     author = data['author'],
     isbn = data['isbn'],
@@ -363,7 +363,7 @@ def book_update(id):
   book = db.query(Book).get(id)
 
   # Update book with new data
-  book.book_title = data['book_title']
+  book.title = data['title']
   book.genre = data['genre']
   book.author = data['author']
   book.rating = data['rating']

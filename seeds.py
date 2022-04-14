@@ -1,5 +1,5 @@
 from app.db import Session, Base, engine
-from app.models import Book, Author
+from app.models import Book, Author, Review, User
 
 # Drop and rebuild tables
 Base.metadata.drop_all(engine)
@@ -7,9 +7,19 @@ Base.metadata.create_all(engine)
 
 db = Session()
 
+# Insert users
+     ## USER SEEDS HERE ##
+
+db.commit()
+
+# Insert reviews
+     ## REVIEW SEEDS HERE ##
+
+db.commit()
+
 # Insert books
 db.add_all([
-    Book(book_title="Little Women",
+    Book(title="Little Women",
          author="Louisa May Alcott",
          isbn=9781593081089,
          publisher="Barnes & Noble",
@@ -19,7 +29,7 @@ db.add_all([
          description="Generations of readers young and old, male and female, have fallen in love with Little Women",
          sold_copies=3000),
 
-    Book(book_title="Frankenstein",
+    Book(title="Frankenstein",
          author="Mary Shelley",
          isbn=9780143131847,
          publisher="Penguin Publishing Group",
@@ -29,7 +39,7 @@ db.add_all([
          description="Mary Shelley's seminal novel of the scientist whose creation becomes a monster.",
          sold_copies=250),
 
-    Book(book_title="The Picture of Dorian Gray",
+    Book(title="The Picture of Dorian Gray",
          author="Oscar Wilde",
          isbn=9781593080259,
          publisher="Barnes & Noble",
@@ -39,7 +49,7 @@ db.add_all([
          description="Oscar Wilde brings his enormous gifts for astute social observation and sparkling prose to The Picture of Dorian Gray",
          sold_copies=3100),
 
-    Book(book_title="Wuthering Heights",
+    Book(title="Wuthering Heights",
          author="Emily Bronte",
          isbn=9780141439556,
          publisher="Penguin Publishing Group",
@@ -49,7 +59,7 @@ db.add_all([
          description="Wuthering Heights is a wild, passionate story of the intense and almost demonic love.",
          sold_copies=1000),
 
-    Book(book_title="Treasure Island",
+    Book(title="Treasure Island",
          author="Robert Louis Stevenson",
          isbn=9781593082475,
          publisher="Barnes & Noble",
@@ -59,7 +69,7 @@ db.add_all([
          description="The most popular pirate story ever written in English, featuring one of literature's most beloved.",
          sold_copies=800),
 
-    Book(book_title="Fahrenheit 451: A Novel",
+    Book(title="Fahrenheit 451: A Novel",
          author="Ray Bradbury",
          isbn=9781451673319,
          publisher="Simon & Schuster",
@@ -69,7 +79,7 @@ db.add_all([
          year_published=2012,
          sold_copies=1500),
 
-    Book(book_title="Alice's Adventures in Wonderland & Through The Looking Glass",
+    Book(title="Alice's Adventures in Wonderland & Through The Looking Glass",
          author="Lewis Carroll",
          isbn=9781533653697,
          publisher="CreateSpace Publishing",
@@ -79,7 +89,7 @@ db.add_all([
          description="The young Alice is bored in a too conventional world. But here goes a White Rabbit.",
          sold_copies=900),
 
-    Book(book_title="Peter Pan",
+    Book(title="Peter Pan",
          author="J.M.Barrie",
          isbn=9780805072457,
          publisher="Henry Holt and Co.",
@@ -89,7 +99,7 @@ db.add_all([
          description="Peter Pan, the mischievous boy who refuses to grow up.",
          sold_copies=2300),
 
-    Book(book_title="A Wrinkle in Time",
+    Book(title="A Wrinkle in Time",
          author="Madeleine L'Engle",
          isbn=9780312367541,
          publisher="Square Fish",
@@ -99,7 +109,7 @@ db.add_all([
          description="Out of this wild night, a strange visitor comes to the Murry house and beckons Meg.",
          sold_copies=1350),
 
-    Book(book_title="The Wizard of Oz",
+    Book(title="The Wizard of Oz",
          author="L. Frank Baum",
          isbn=9780141321028,
          publisher="Penguin Publishing Group",
@@ -109,7 +119,7 @@ db.add_all([
          description="Dorothy thinks she is lost forever when a terrifying tornado crashes through Kansas.",
          sold_copies=3600),
 
-    Book(book_title="The Secret of the Old Clock (Nancy Drew Mystery Stories #1)",
+    Book(title="The Secret of the Old Clock (Nancy Drew Mystery Stories #1)",
          author="Carolyn Keene",
          isbn=9780448095011,
          publisher="Applewood Books",
@@ -119,7 +129,7 @@ db.add_all([
          description="Nancy, unaided, seeks to find a missing will.",
          sold_copies=750),
 
-    Book(book_title="In Cold Blood",
+    Book(title="In Cold Blood",
          author="Truman Capote",
          isbn=9780679745587,
          publisher="Knopf Doubleday Publishing Group",
@@ -129,7 +139,7 @@ db.add_all([
          description="On November 15, 1959, in the small town of Holcomb, Kansas, four members of the Clutter family were savagely murdered.",
          sold_copies=1200),
 
-    Book(book_title="The Devil in the White City",
+    Book(title="The Devil in the White City",
          author="Erik Larson",
          isbn=9780609608449,
          publisher="Crown Publishers",
@@ -139,7 +149,7 @@ db.add_all([
          description="Two men, each handsome and unusually adept at his chosen work, embodied an element of the great dynamic.",
          sold_copies=4000),
 
-    Book(book_title="Helter Skelter: The True), Story of the Manson Murders",
+    Book(title="Helter Skelter: The True), Story of the Manson Murders",
          author="Vincent Bugliosi, Curt Gentry",
          isbn=9780393322231,
          publisher="W.W. Norton ny",
@@ -149,7 +159,7 @@ db.add_all([
          description="In the summer of 1969, in Los Angeles, a series of brutal, seemingly random murders captured headlines across America.",
          sold_copies=2700),
 
-    Book(book_title="Zodiac: The Shocking True)",
+    Book(title="Zodiac: The Shocking True)",
          author="Robert Graysmith",
          isbn=9780425212189,
          publisher="Penguin Publishing Group",
@@ -159,7 +169,7 @@ db.add_all([
          description="A sexual sadist, the Zodiac killer took pleasure in torture and murder. His first victims were a teenage couple.",
          sold_copies=3200),
 
-    Book(book_title="The Road to Jonestown: Jim Jones and Peoples Temple",
+    Book(title="The Road to Jonestown: Jim Jones and Peoples Temple",
          author="Jeff Guinn",
          isbn=9781476763835,
          publisher="Simon & Schuster",
@@ -169,7 +179,7 @@ db.add_all([
          description="In the 1950s, a young Indianapolis minister named Jim Jones preached a curious blend of the gospel and Marxism.",
          sold_copies=1800),
 
-    Book(book_title="The Talented Mr. Ripley",
+    Book(title="The Talented Mr. Ripley",
          author="Patricia Highsmith",
          isbn=9780393332148,
          publisher="W.W. Norton ny",
@@ -179,7 +189,7 @@ db.add_all([
          description="Since his debut in 1955, Tom Ripley has evolved into the ultimate bad boy sociopath.",
          sold_copies=1500),
 
-    Book(book_title="Murder on the Orient Express",
+    Book(title="Murder on the Orient Express",
          author="Agatha Christie",
          isbn=9780007119318,
          publisher="HarperCollins",
@@ -189,7 +199,7 @@ db.add_all([
          description="Just after midnight, a snowdrift stops the Orient Express in its tracks as it travels through the mountainous Balkans.",
          sold_copies=900),
 
-    Book(book_title="The Shining",
+    Book(title="The Shining",
          author="Stephen King",
          isbn=9780450040184,
          publisher="New English Library",
@@ -199,7 +209,7 @@ db.add_all([
          description="Jack Torrance's new job at the Overlook Hotel is the perfect chance for a fresh start.",
          sold_copies=3400),
 
-    Book(book_title="Gone Girl",
+    Book(title="Gone Girl",
          author="Gillian Flynn",
          isbn=9780307588371,
          publisher="Random House Publishing Group",
@@ -209,7 +219,7 @@ db.add_all([
          description="On a warm summer morning in North Carthage, Missouri, it is Nick and Amy Dunne’s fifth wedding anniversary.",
          sold_copies=1700),
 
-    Book(book_title="The Silence of Lambs",
+    Book(title="The Silence of Lambs",
          author="Thomas Harris",
          isbn=9780312924584,
          publisher="St. Martin's Publishing Group",
