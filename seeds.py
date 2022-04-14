@@ -8,12 +8,78 @@ Base.metadata.create_all(engine)
 db = Session()
 
 # Insert users
-## USER SEEDS HERE ##
+db.add_all()
+    User(name="Fernando",
+         username = "Fernando",
+         email= "Fernando@fiu.edu",
+         home_address = "123 SW 56 street",
+         password= 123),
+
+    User(name="Sasha",
+        username = "Sasha",
+        email= "Sasha@fiu.edu",
+        home_address = "354 NW 44 street",
+        password= 123),
+
+    User(name="Thamare",
+         username = "Thamare",
+         email= "Thamare@fiu.edu",
+         home_address = "789 SW 22 street",
+         password= 123),
+
+    User(name="Karim",
+         username = "Karim",
+         email= "Karim@fiu.edu",
+         home_address = "555 NW 10 street",
+         password= 123),
+
+    User(name="Sebastian",
+         username = "Sebastian",
+         email= "Sebastian@fiu.edu",
+         home_address = "965 SW 30 street",
+         password= 123),
+
+    User(name="Camilo",
+         username = "Camilo",
+         email= "Camilo@fiu.edu",
+         home_address = "523 NW 16 street",
+         password= 123),                    
+])
 
 db.commit()
 
 # Insert reviews
-## REVIEW SEEDS HERE ##
+db.add_all()
+    Review(rating="5",
+           comment = "Excellent book! Enjoyed it!",
+           username= "Camilo",
+           created_at = default),
+
+    Review(rating="3",
+           comment = "Good book.",
+           username= "Sasha",
+           created_at = default),
+
+    Review(rating="3",
+           comment = "The book was good.",
+           username= "Thamare",
+           created_at = default),
+
+    Review(rating="4",
+           comment = "Great book",
+           username= "Sebastian",
+           created_at = default),
+
+    Review(rating="5",
+           comment = "Amazing book! Enjoyed it!",
+           username= "Karim",
+           created_at = default),
+
+    Review(rating="3",
+           comment = "Good book.",
+           username= "Fernando",
+           created_at = default),            
+])
 
 db.commit()
 
