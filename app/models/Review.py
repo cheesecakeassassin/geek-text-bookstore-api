@@ -8,5 +8,6 @@ class Review(Base, SerializerMixin):
     id = Column(Integer, primary_key=True)
     rating = Column(String(40))
     comment = Column(String(50))
-    username = Column(Integer, ForeignKey('users.username'), nullable=False)
+    user_username = Column(String(50), ForeignKey('users.username'), nullable=False)
     created_at = Column(DateTime, default=datetime.now)
+    book_id = Column(Integer, ForeignKey('books.id'), nullable=False)

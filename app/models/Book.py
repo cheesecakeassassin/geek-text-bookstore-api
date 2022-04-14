@@ -16,4 +16,4 @@ class Book(Base, UserMixin, SerializerMixin):
     year_published = Column(Integer, nullable = False)
     description = Column(String(200), nullable = False)
     sold_copies = Column(Integer, nullable = False)
-    reviews = relationship('Review', backref='in_review')
+    reviews = relationship('Review')
