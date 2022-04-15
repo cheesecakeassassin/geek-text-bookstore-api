@@ -121,6 +121,10 @@ def update_user(id):
 
   return jsonify(message = "Successfully updated")
 
+
+
+
+
 ###########################################################################
 ############################ CARD ROUTES ##################################
 ###########################################################################
@@ -168,6 +172,10 @@ def add_card():
     return jsonify(message = 'Add card failed'), 500
 
   return jsonify(id = new_card.id, name = new_card.name, expiration_date = new_card.expiration_date, card_number = new_card.card_number, security_code = new_card.security_code, zip_code = new_card.zip_code, user_id = new_card.user_id)
+
+
+
+
 
 ###########################################################################
 ########################## WISHLIST ROUTES ################################
@@ -237,6 +245,10 @@ def move_to_hopping_cart(username):
 
   return jsonify(my_book)
 
+
+
+
+
 ###########################################################################
 ####################### SHOPPING CART ROUTES ##############################
 ###########################################################################
@@ -255,6 +267,52 @@ def get_shoppingcart(username):
   shopping_cart = [book.to_dict() for book in shopping_cart_list]
 
   return jsonify(shopping_cart)
+
+
+@app.route('/addingBooks/<userName>', methods = ['POST'])
+def shopping_add(userName):
+    user = User.query.filter_by(name=userName).first()  #we first get the user from our db
+    bookID = request.json['id']
+    book = Book.query.get(bookID)
+    user.shopping_cart.append(book)  #appending the book to the user's shopping cart
+    db.session.commit()   #saving it to the database
+    shopping_cart = [] #creating an empty shopping cart
+    for book in user.shopping_cart:
+        bookAdd = book_dict(book)
+        shopping_cart.append(bookAdd)   # 
+    bookAdded = json.dumps(shopping_cart)
+    return bookAdded
+
+#RETRIEVE THE LIST OF BOOKS FROM THE SHOPPING CART/LIST
+@app.route('/retrievingList/<userName>', methods = ['GET'])
+def cart_retrieving(userName):
+    user = User.query.filter_by(name=userName).first()
+    userList = user.shopping_cart  #storing the list in the shopping as the user's
+    shopping_cart = []
+    for book in shopping_cart:  #going through the cart
+        books = book_dict(book)
+#going through the shopping cart and get one of the book dictionaries
+    bookList = json.dumps(books)
+    return bookList
+
+
+#DELETE A BOOK FROM THE SHOPPING CART FOR THAT USER
+@app.route('/deletingBooks/<userName>', methods = ['DELETE'])
+def cart_deleting(userName):
+    bookID = request.json['id']
+    user = User.query.filter_by(name=userName).first()
+    # Get the book from the DB
+    book = Book.query.get(bookID)   #referring to the book in the database that is in the shopping cart
+    #go through the shopping cart
+    for Book in user.shopping_cart:
+        bookdeleted = user.shopping_cart.remove(book)
+        db.session.commit()
+        deleted = json.dumps(bookdeleted)
+    return deleted
+
+
+
+
 
 ###########################################################################
 ######################### BOOK DETAILS ROUTES #############################
@@ -395,6 +453,10 @@ def delete_book(id):
 
   return jsonify(message = result)
 
+
+
+
+
 ###########################################################################
 ####################  BROWSING AND SORTING ROUTES #########################
 ###########################################################################
@@ -473,6 +535,10 @@ def get_books_by_x_record(record):
       break
 
     return jsonify(book_list)
+
+
+
+
 
 ###########################################################################
 ##################### RATING AND COMMENTING ROUTES ########################
