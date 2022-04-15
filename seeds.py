@@ -8,77 +8,77 @@ Base.metadata.create_all(engine)
 db = Session()
 
 # Insert users
-db.add_all()
+db.add_all([
     User(name="Fernando",
-         username = "Fernando",
-         email= "Fernando@fiu.edu",
-         home_address = "123 SW 56 street",
-         password= 123),
+         username="fernandosantamarta",
+         email="fsanta076@fbi.gov",
+         home_address="123 SW 56 Street",
+         password="test123"),
 
     User(name="Sasha",
-        username = "Sasha",
-        email= "Sasha@fiu.edu",
-        home_address = "354 NW 44 street",
-        password= 123),
+         username="thedinoinstitute",
+         email="sashascannell@mit.edu",
+         home_address="354 NW 44 Street",
+         password="test123"),
 
     User(name="Thamare",
-         username = "Thamare",
-         email= "Thamare@fiu.edu",
-         home_address = "789 SW 22 street",
-         password= 123),
+         username="Thamare1",
+         email="thamaresaintlouis@aol.com",
+         home_address="789 SW 22 Street",
+         password="test123"),
 
     User(name="Karim",
-         username = "Karim",
-         email= "Karim@fiu.edu",
-         home_address = "555 NW 10 street",
-         password= 123),
+         username="AbdulJabaar",
+         email="karimthedream@bellsouth.net",
+         home_address="555 NW 10 Street",
+         password="test123"),
 
     User(name="Sebastian",
-         username = "Sebastian",
-         email= "Sebastian@fiu.edu",
-         home_address = "965 SW 30 street",
-         password= 123),
+         username="cheesecakeassassin",
+         email="seabass96@yahoo.com",
+         home_address="965 SW 30 Street",
+         password="test123"),
 
     User(name="Camilo",
-         username = "Camilo",
-         email= "Camilo@fiu.edu",
-         home_address = "523 NW 16 street",
-         password= 123),                    
+         username="puesyo",
+         email="puesyonose@gmail.com",
+         home_address="523 NW 16 Street",
+         password="test123")
 ])
 
 db.commit()
 
 # Insert reviews
-db.add_all()
+db.add_all([
     Review(rating="5",
-           comment = "Excellent book! Enjoyed it!",
-           username= "Camilo",
-           created_at = default),
+           comment="Excellent book! Enjoyed it! I hope there is a sequel!",
+           user_username="puesyo",
+           book_id=1),
 
     Review(rating="3",
-           comment = "Good book.",
-           username= "Sasha",
-           created_at = default),
+           comment="Good book, but could have used more cowbell...",
+           user_username="thedinoinstitute",
+           book_id=1),
 
     Review(rating="3",
-           comment = "The book was good.",
-           username= "Thamare",
-           created_at = default),
+           comment="The book was decent if I am quite honest.",
+           user_username="Thamare1",
+           book_id=1),
 
     Review(rating="4",
-           comment = "Great book",
-           username= "Sebastian",
-           created_at = default),
+           comment="Great book, Frankenstein's monster was so scary!",
+           user_username="cheesecakeassassin",
+           book_id=2),
 
     Review(rating="5",
-           comment = "Amazing book! Enjoyed it!",
-           username= "Karim",
-           created_at = default),
+           comment="Amazing book! Enjoyed it! Mary Shelley is a beast!",
+           user_username="AbdulJabaar",
+           book_id=2),
 
     Review(rating="3",
-           comment = "Good book.",
-           username= "Fernando",
-           created_at = default),            
+           comment="Good book overall, but the ending sucked!",
+           user_username="fernandosantamarta",
+           book_id=2)
 ])
 
 db.commit()
