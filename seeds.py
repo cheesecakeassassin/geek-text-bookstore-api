@@ -7,47 +7,6 @@ Base.metadata.create_all(engine)
 
 db = Session()
 
-# Insert users
-db.add_all()
-    User(name="Fernando",
-         username = "Fernando",
-         email= "Fernando@fiu.edu",
-         home_address = "123 SW 56 street",
-         password= 123),
-
-    User(name="Sasha",
-        username = "Sasha",
-        email= "Sasha@fiu.edu",
-        home_address = "354 NW 44 street",
-        password= 123),
-
-    User(name="Thamare",
-         username = "Thamare",
-         email= "Thamare@fiu.edu",
-         home_address = "789 SW 22 street",
-         password= 123),
-
-    User(name="Karim",
-         username = "Karim",
-         email= "Karim@fiu.edu",
-         home_address = "555 NW 10 street",
-         password= 123),
-
-    User(name="Sebastian",
-         username = "Sebastian",
-         email= "Sebastian@fiu.edu",
-         home_address = "965 SW 30 street",
-         password= 123),
-
-    User(name="Camilo",
-         username = "Camilo",
-         email= "Camilo@fiu.edu",
-         home_address = "523 NW 16 street",
-         password= 123),                    
-])
-
-db.commit()
-
 # Insert reviews
 db.add_all()
     Review(rating="5",
@@ -383,6 +342,47 @@ db.add_all([
     Author(name="Thomas Harris",
            biography="Gillian Flynn is an American author and television critic for Entertainment Weekly. She has so far written.",
            publisher="St. Martin's Publishing Group")
+])
+
+db.commit()
+
+# Insert users
+db.add_all()
+    User(name="Fernando",
+         username = "Fernando",
+         email= "Fernando@fiu.edu",
+         home_address = "123 SW 56 street",
+         password= 123),
+
+    User(name="Sasha",
+        username = "Sasha",
+        email= "Sasha@fiu.edu",
+        home_address = "354 NW 44 street",
+        password= 123),
+
+    User(name="Thamare",
+         username = "Thamare",
+         email= "Thamare@fiu.edu",
+         home_address = "789 SW 22 street",
+         password= 123),
+
+    User(name="Karim",
+         username = "Karim",
+         email= "Karim@fiu.edu",
+         home_address = "555 NW 10 street",
+         password= 123),
+
+    User(name="Sebastian",
+         username = "Sebastian",
+         email= "Sebastian@fiu.edu",
+         home_address = "965 SW 30 street",
+         password= 123),
+
+    User(name="Camilo",
+         username = "Camilo",
+         email= "Camilo@fiu.edu",
+         home_address = "523 NW 16 street",
+         password= 123),                    
 ])
 
 db.commit()
