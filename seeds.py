@@ -8,7 +8,7 @@ Base.metadata.create_all(engine)
 db = Session()
 
 # Insert reviews
-db.add_all()
+db.add_all([
     Review(rating="5",
            comment = "Excellent book! Enjoyed it!",
            username= "Camilo",
@@ -347,7 +347,7 @@ db.add_all([
 db.commit()
 
 # Insert users
-db.add_all()
+db.add_all([
     User(name="Fernando",
          username = "Fernando",
          email= "Fernando@fiu.edu",
