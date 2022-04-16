@@ -1,6 +1,5 @@
 from flask import Blueprint, request, jsonify
 from app.models import User, Card, Book, Review, Author, Wishlist
-from datetime import datetime
 from app.db import get_db
 import sys
 

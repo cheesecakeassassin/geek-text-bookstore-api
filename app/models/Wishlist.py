@@ -1,6 +1,5 @@
 from app.db import Base
-from datetime import datetime
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy_serializer import SerializerMixin
 
 class Wishlist(Base, SerializerMixin):
