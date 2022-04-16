@@ -8,7 +8,7 @@ class Review(Base, SerializerMixin):
     __tablename__ = 'reviews'
     id = Column(Integer, primary_key=True)
     rating = Column(String(40))
-    comment = Column(String(50))
+    comment = Column(String(100))
     user_username = Column(String(50), ForeignKey('users.username'), nullable=False)
     created_at = Column(DateTime, default=datetime.now)
-    book_id = Column(Integer, ForeignKey('books.id'), nullable=False)
+    book_id = Column(Integer, ForeignKey('books.id'), nullable=True)

@@ -16,7 +16,7 @@ author_to_book = Table('author_to_book',
 class Author(Base, UserMixin, SerializerMixin):
     __tablename__ = 'authors'
     id = Column(Integer, primary_key=True)
-    name = Column(String(100), unique=True)
+    name = Column(String(100), unique=True, nullable=False)
     biography = Column(String(200))
     publisher = Column(String(50))
-    books = relationship('Book', secondary=author_to_book, backref='in_authors')
+    books = relationship('Book', secondary=author_to_book)

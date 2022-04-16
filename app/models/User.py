@@ -11,7 +11,7 @@ salt = bcrypt.gensalt()
 wishlist = Table('wishlist',
   Base.metadata,
   Column('username', String(50), ForeignKey('users.username')), 
-  Column('book_id', Integer, ForeignKey('books.id'))
+  Column('book_id', Integer, ForeignKey('books.id')),
 )
 
 # Create a shopping cart table
@@ -31,9 +31,9 @@ class User(Base, SerializerMixin):
   home_address = Column(String(100), nullable=True)
   password = Column(String(100), nullable=False)
   cards = relationship('Card', cascade='all,delete,delete-orphan')
-  wishlist = relationship('Book', secondary=wishlist, backref='in_wishlist')
-  shopping_cart = relationship('Book', secondary=shopping_cart, backref='in_shopping_cart')
-  reviews = relationship('Review', backref='in_review')
+  wishlist = relationship('Book', secondary=wishlist)
+  shopping_cart = relationship('Book', secondary=shopping_cart)
+  reviews = relationship('Review')
 
   # Validation functions
   @validates('email')

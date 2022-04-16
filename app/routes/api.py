@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.models import User, Card, Book, Review, Author
+from app.models import User, Card, Book, Review, Author, Wishlist
 from datetime import datetime
 from app.db import get_db
 import sys
@@ -139,8 +139,8 @@ def get_all_cards():
   cards = db.query(Card).all()
 
   # Serializes all cards and adds them to an array to be printed as json
-  card_list = [card.to_dict for card in cards]
-
+  card_list = [card.to_dict() for card in cards]
+  
   return jsonify(card_list)
 
 
@@ -206,22 +206,26 @@ def create_wishlist():
   db = get_db()
   data = request.get_json()
 
-  # User and the book they want added to the wishlist
-  username = data['username']
-  book_id = data['book_id']
+  # Create wishlist
+  new_wishlist = Wishlist(
+    username = data['username'],
+    book_id = data['book_id'],
+    name = data['name']
+  )
 
   # Get the user and book from the DB
-  user = db.query(User).filter_by(username=username).first()
-  book = db.query(Book).get(book_id)
+  user = db.query(User).filter_by(username=data['username']).first()
+  book = db.query(Book).get(data['book_id'])
 
-  # Add book to the wish list
+  # # Add book to the wish list
   user.wishlist.append(book)
 
-  # Save the wish list into the DB
+  # # Save the wish list into the DB
+  db.add(new_wishlist)
   db.commit()
 
   # Return the wish list as json
-  result = book.to_dict()
+  result = new_wishlist.to_dict()
 
   return jsonify(result)
 
@@ -233,13 +237,13 @@ def move_to_shopping_cart():
   db = get_db()
   data = request.get_json()
 
-  # User and the book they want added to the wishlist
+  # User and the book they want removed from the wishlist
   username = data['username']
   book_id = data['book_id']
 
   # Get the user and book from the DB
   user = db.query(User).filter_by(username=username).first()
-  book = db.query(Book).get(book_id )
+  book = db.query(Book).get(book_id)
 
   # Remove book from the wish list and send it to shopping cart
   user.wishlist.remove(book)
@@ -289,8 +293,8 @@ def add_to_shopping_cart():
   book_id = data['book_id']
 
   # We first get the user and the bookfrom our db
-  user = User.query.filter_by(username=username).first()
-  book = Book.query.get(book_id)
+  user = db.query(User).filter_by(username=username).first()
+  book = db.query(Book).get(book_id)
 
   # Appending the book to the user's shopping cart
   user.shopping_cart.append(book)
@@ -301,7 +305,7 @@ def add_to_shopping_cart():
   return jsonify(message="Successfully added book")
 
 
-#DELETE A BOOK FROM THE SHOPPING CART FOR THAT USER
+# Delete a book from shopping cart
 @bp.route('/shopping-cart/', methods = ['DELETE'])
 def delete_book_from_shopping_cart():
   # Import db
@@ -380,7 +384,7 @@ def get_book_by_isbn(isbn):
   db = get_db()
   
   # Querying book by id and serializing it
-  book = db.query(Book).filterBy(isbn=isbn).first()
+  book = db.query(Book).filter_by(isbn=isbn).first()
   my_book = book.to_dict()
 
   return jsonify(my_book)
@@ -475,13 +479,13 @@ def delete_book(id):
 ###########################################################################
 
 # Get books by genre
-@bp.route('/books/<genre>', methods=['GET'])
+@bp.route('/book-genre/<genre>', methods=['GET'])
 def get_books_by_genre(genre):
   # Import db
   db = get_db()
 
   # Query books by genre then compile them in a list to print as json
-  books = db.query(Book).filter_by(genre).all()
+  books = db.query(Book).filter_by(genre=genre).all()
   book_list = [book.to_dict() for book in books]
 
   return jsonify(book_list)
@@ -498,7 +502,7 @@ def get_top_sellers():
 
   book_list = [book.to_dict() for book in books]
 
-  sorted_books = sorted(book_list, key=lambda x: x['soldCopies'], reverse=True)
+  sorted_books = sorted(book_list, key=lambda x: x['sold_copies'], reverse=True)
   sorted_list = []
   # Display top 10 books
   i = 0
@@ -520,10 +524,12 @@ def get_book_by_rating(rating):
   books = db.query(Book).all()
   books_by_rating = []
 
+  # Iterates through book's review's ratings and compares with given rating
   for book in books:
-    if book.rating >= rating:
-      all_books = book.to_dict()
-      books_by_rating.append(all_books)
+    for review in book.reviews:
+      if review.rating >= rating:
+        all_reviews = review.to_dict()
+        books_by_rating.append(all_reviews)
 
   return jsonify(books_by_rating)
 
@@ -540,14 +546,14 @@ def get_books_by_x_record(record):
 
   i = 0
   for book in books:
-    if i < record:
+    if i < int(record):
       all_books = book.to_dict()
       book_list.append(all_books)
       i += 1
     else:
       break
 
-    return jsonify(book_list)
+  return jsonify(book_list)
 
 
 
@@ -558,24 +564,23 @@ def get_books_by_x_record(record):
 ###########################################################################
 
 # Add user rating and comments to a book
-@bp.route('/reviews/<username>', methods=['POST'])
-def create_book_review_input(username):
+@bp.route('/reviews/', methods=['POST'])
+def create_book_review_input():
   # Import db
   db = get_db()
   data = request.get_json()
 
   # Get the user from the DB
-  user = db.query(User).filter_by(username=username).first()
+  user = db.query(User).filter_by(username=data['user_username']).first()
 
   # Get the book from the DB
-  book = db.query(Book).get(data['id'])
+  book = db.query(Book).get(data['book_id'])
 
   # Create review
   review = Review(
     rating = data['rating'], 
     comment = data['comment'],
-    username = username,
-    created_at = datetime.now
+    user_username = data['user_username']
   )
   # Add book to the user's book review
   book.reviews.append(review)
@@ -602,12 +607,12 @@ def get_book_by_rating_average(id):
   counter = 0
   rating_sum = 0
   for review in book.reviews:
-    rating_sum += review.rating
+    rating_sum += int(review.rating)
     counter += 1
 
   average_rating = rating_sum / counter
 
-  return jsonify(average_rating = average_rating + " for book #" + id)
+  return jsonify(book_id = id, average_rating = average_rating)
 
 
 # Get list of ratings/comments sorted by highest rating
@@ -616,13 +621,17 @@ def get_reviews_by_rating():
   # Import db
   db = get_db()
 
-  # Query all reviews
-  reviews = db.query(Review).all()
+  # Query all books
+  books = db.query(Book).all()
+  books_by_rating = []
+
+  # Iterates through book's review's ratings and compares with given rating
+  for book in books:
+    for review in book.reviews:
+      all_reviews = review.to_dict()
+      books_by_rating.append(all_reviews)
 
   # Sort reviews and place in array
-  sorted_reviews = sorted(reviews, key=lambda x: x['rating'])
+  sorted_reviews = sorted(books_by_rating, key=lambda x: x['rating'], reverse=True)
 
-  # Convert to json and pass into new array
-  sorted_list = [review.to_dict() for review in sorted_reviews]
-
-  return jsonify(sorted_list)
+  return jsonify(sorted_reviews)
