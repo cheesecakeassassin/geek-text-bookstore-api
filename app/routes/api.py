@@ -240,6 +240,7 @@ def move_to_shopping_cart():
   # User and the book they want removed from the wishlist
   username = data['username']
   book_id = data['book_id']
+  name = data['name']
 
   # Get the user and book from the DB
   user = db.query(User).filter_by(username=username).first()
