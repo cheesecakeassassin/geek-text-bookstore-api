@@ -28,8 +28,9 @@ Created by the fellas over at Group 18. Enjoy!
   
   * Open a terminal, head to the desired destination folder and type ```git clone git@github.com:cheesecakeassassin/group18-bookstore-api.git```
   * Run ```cd group18-bookstore-api``` to enter the repository.
-  * Run ```venv/Scripts/activate``` for Windows and ```source venv/bin/activate``` for MacOS to enter a virtual environment to then install the dependencies.
-  * Run ```pip install flask```, ```pip install flask_admin```, ```pip install flask_login```, ```pip install bcrypt```, ```pip install sqlalchemy```, ```pip install sqlalchemy_serializer```, and ```pip install dotenv``` to install all the needed dependencies.
+  * Run ```python -m venv venv``` to initiate a virtual environment.
+  * Run ```venv/Scripts/activate``` for Windows and ```source venv/bin/activate``` for MacOS to enter the virtual environment to then install the dependencies.
+  * Run ```pip install flask flask_admin flask_login bcrypt sqlalchemy pymysql python-dotenv dotenv``` to install all the needed dependencies.
   * Create a ```.env``` file in the root directory with the following text: ```DB_URL=mysql+pymysql://root:<password>@localhost/bookstore_api_db``` replacing ```<password>``` with your MySQL password (MySQL must be downloaded on your machine).
   * Run ```mysql -u root -p``` to enter the MySQL shell, then enter your MySQL password.
   * Run ```source app/db/schema.sql``` to create the database followed by ```exit``` to exit the MySQL shell.

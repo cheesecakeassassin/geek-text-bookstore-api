@@ -200,15 +200,19 @@ def get_wishlist(username):
     
     
  # Add book to given user's wishlist
-@bp.route('/wishlist/<username>', methods=['POST'])
-def create_wishlist(username):
+@bp.route('/wishlist/', methods=['POST'])
+def create_wishlist():
   # Import database
   db = get_db()
   data = request.get_json()
 
+  # User and the book they want added to the wishlist
+  username = data['username']
+  book_id = data['book_id']
+
   # Get the user and book from the DB
   user = db.query(User).filter_by(username=username).first()
-  book = db.query(Book).get(data['id'])
+  book = db.query(Book).get(book_id)
 
   # Add book to the wish list
   user.wishlist.append(book)
@@ -223,15 +227,19 @@ def create_wishlist(username):
 
 
 # Remove a book from given user's wishlist and send to shopping cart
-@bp.route('/wishlist/<username>', methods=['DELETE'])
-def move_to_hopping_cart(username):
+@bp.route('/wishlist/', methods=['DELETE'])
+def move_to_shopping_cart():
   # Import database
   db = get_db()
   data = request.get_json()
 
+  # User and the book they want added to the wishlist
+  username = data['username']
+  book_id = data['book_id']
+
   # Get the user and book from the DB
   user = db.query(User).filter_by(username=username).first()
-  book = db.query(Book).get(data['id'])
+  book = db.query(Book).get(book_id )
 
   # Remove book from the wish list and send it to shopping cart
   user.wishlist.remove(book)
@@ -269,46 +277,51 @@ def get_shoppingcart(username):
   return jsonify(shopping_cart)
 
 
-@app.route('/addingBooks/<userName>', methods = ['POST'])
-def shopping_add(userName):
-    user = User.query.filter_by(name=userName).first()  #we first get the user from our db
-    bookID = request.json['id']
-    book = Book.query.get(bookID)
-    user.shopping_cart.append(book)  #appending the book to the user's shopping cart
-    db.session.commit()   #saving it to the database
-    shopping_cart = [] #creating an empty shopping cart
-    for book in user.shopping_cart:
-        bookAdd = book_dict(book)
-        shopping_cart.append(bookAdd)   # 
-    bookAdded = json.dumps(shopping_cart)
-    return bookAdded
+#Add book to shopping cart
+@bp.route('/shopping-cart/', methods = ['POST'])
+def add_to_shopping_cart():
+  # Import db
+  db = get_db()
+  data = request.get_json()
 
-#RETRIEVE THE LIST OF BOOKS FROM THE SHOPPING CART/LIST
-@app.route('/retrievingList/<userName>', methods = ['GET'])
-def cart_retrieving(userName):
-    user = User.query.filter_by(name=userName).first()
-    userList = user.shopping_cart  #storing the list in the shopping as the user's
-    shopping_cart = []
-    for book in shopping_cart:  #going through the cart
-        books = book_dict(book)
-#going through the shopping cart and get one of the book dictionaries
-    bookList = json.dumps(books)
-    return bookList
+  # User and the book they want added to the wishlist
+  username = data['username']
+  book_id = data['book_id']
+
+  # We first get the user and the bookfrom our db
+  user = User.query.filter_by(username=username).first()
+  book = Book.query.get(book_id)
+
+  # Appending the book to the user's shopping cart
+  user.shopping_cart.append(book)
+
+  # Saving it to the database
+  db.commit()
+
+  return jsonify(message="Successfully added book")
 
 
 #DELETE A BOOK FROM THE SHOPPING CART FOR THAT USER
-@app.route('/deletingBooks/<userName>', methods = ['DELETE'])
-def cart_deleting(userName):
-    bookID = request.json['id']
-    user = User.query.filter_by(name=userName).first()
-    # Get the book from the DB
-    book = Book.query.get(bookID)   #referring to the book in the database that is in the shopping cart
-    #go through the shopping cart
-    for Book in user.shopping_cart:
-        bookdeleted = user.shopping_cart.remove(book)
-        db.session.commit()
-        deleted = json.dumps(bookdeleted)
-    return deleted
+@bp.route('/shopping-cart/', methods = ['DELETE'])
+def delete_book_from_shopping_cart():
+  # Import db
+  db = get_db()
+  data = request.get_json()
+
+  # User and the book they want added to the wishlist
+  username = data['username']
+  book_id = data['book_id']
+
+  # Query user and book to be deleted from shopping cart
+  user = db.query(User).filter_by(username=username).first()
+  book = db.query(Book).get(book_id)  
+
+  # Delete book from shopping cart
+  user.shopping_cart.remove(book)
+
+  db.commit()
+
+  return jsonify(message = "Book #" + book_id + " deleted")
 
 
 
