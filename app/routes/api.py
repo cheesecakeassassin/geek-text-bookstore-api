@@ -314,7 +314,7 @@ def delete_book_from_shopping_cart():
 
   # Query user and book to be deleted from shopping cart
   user = db.query(User).filter_by(username=username).first()
-  book = db.query(Book).get(book_id)  
+  book = db.query(Book).get(book_id)
 
   # Delete book from shopping cart
   user.shopping_cart.remove(book)

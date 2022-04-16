@@ -7,7 +7,6 @@ Base.metadata.create_all(engine)
 
 db = Session()
 
-<<<<<<< HEAD
 # Insert users
 db.add_all([
     User(name="Fernando",
@@ -80,39 +79,6 @@ db.add_all([
            comment="Good book overall, but the ending sucked!",
            user_username="fernandosantamarta",
            book_id=2)
-=======
-# Insert reviews
-db.add_all([
-    Review(rating="5",
-           comment = "Excellent book! Enjoyed it!",
-           username= "Camilo",
-           created_at = default),
-
-    Review(rating="3",
-           comment = "Good book.",
-           username= "Sasha",
-           created_at = default),
-
-    Review(rating="3",
-           comment = "The book was good.",
-           username= "Thamare",
-           created_at = default),
-
-    Review(rating="4",
-           comment = "Great book",
-           username= "Sebastian",
-           created_at = default),
-
-    Review(rating="5",
-           comment = "Amazing book! Enjoyed it!",
-           username= "Karim",
-           created_at = default),
-
-    Review(rating="3",
-           comment = "Good book.",
-           username= "Fernando",
-           created_at = default),            
->>>>>>> f8905f2d21bde00e39449d9fecee4bb5a18832df
 ])
 
 db.commit()
