@@ -238,14 +238,6 @@ def add_book_to_wishlist(username):
   db.commit()
 
   return jsonify(wishlist.to_dict())
-  # # Requery wishlists after adding new one
-  # # TODO: Make more efficient in future
-  # wishlists = db.query(Wishlist).all()
-
-  # # List of wishlists
-  # wishlist_list = [wishlist.to_dict() for wishlist in wishlists]
-  
-  # return jsonify(wishlist_list)
 
 
 # Remove a book from given user's wishlist and send to shopping cart
@@ -256,11 +248,14 @@ def move_to_shopping_cart(username):
   data = request.get_json()
 
   # Get the user and book from the DB
+  user = db.query(User).filter_by(username=username).first()
   book = db.query(Book).get(data['book_id'])
   wishlist = db.query(Wishlist).filter_by(wishlist_name=data['wishlist_name']).one()
 
   # Add book to the wish list
   wishlist.books.remove(book)
+  user.shopping_cart.append(book)
+
  
   # Save the wish list into the DB
   db.commit()
