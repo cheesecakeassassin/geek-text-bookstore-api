@@ -1,7 +1,7 @@
 from flask_login import UserMixin
 from app.db import Base
 from sqlalchemy_serializer import SerializerMixin
-from sqlalchemy import Column, BigInteger, ForeignKey, Integer, String, Float
+from sqlalchemy import Column, BigInteger, Integer, String, Float
 from sqlalchemy.orm import relationship
 
 # Book class that holds book information

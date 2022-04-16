@@ -585,7 +585,8 @@ def create_book_review_input():
   review = Review(
     rating = data['rating'], 
     comment = data['comment'],
-    user_username = data['user_username']
+    user_username = data['user_username'],
+    book_id = data['book_id']
   )
   # Add book to the user's book review
   book.reviews.append(review)
