@@ -1,4 +1,3 @@
-from enum import unique
 from app.db import Base
 from flask_login import UserMixin
 from sqlalchemy import Column, Integer, BigInteger, String, ForeignKey, Table
