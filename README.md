@@ -35,7 +35,7 @@ Created by the fellas over at Group 18. Enjoy!
   * Run ```mysql -u root -p``` to enter the MySQL shell, then enter your MySQL password.
   * Run ```source app/db/schema.sql``` to create the database followed by ```exit``` to exit the MySQL shell.
   * Run ```python seeds.py``` to seed the database.
-  * Finally, run ```python -m flask run``` to open the development sever and get to work!
+  * Finally, run ```python -m flask run``` to start the development sever and get to work!
 
 
   ### Usage
