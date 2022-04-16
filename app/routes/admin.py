@@ -5,7 +5,7 @@ from flask_login import login_user, login_required, logout_user
 import bcrypt
 
 # Uses /api endpoint for all of these api routes
-bp = Blueprint('admins', __name__, url_prefix='/admins')
+bp = Blueprint('administrator', __name__, url_prefix='/administrator')
 
 # Generates salt used to hash password with bcrypt
 salt = bcrypt.gensalt()
@@ -47,7 +47,7 @@ def register():
         new_admin = AdminUser(username=form.username.data, password=hashed_password)
         db.add(new_admin)
         db.commit()
-        return redirect(url_for('admins.login'))
+        return redirect(url_for('administrator.login'))
 
     return render_template('register.html', form = form)
 
