@@ -1,7 +1,7 @@
 from flask_login import UserMixin
 from app.db import Base
 from sqlalchemy_serializer import SerializerMixin
-from sqlalchemy import Column, BigInteger, Integer, String, Float
+from sqlalchemy import Column, BigInteger, ForeignKey, Integer, String, Float, ForeignKey
 from sqlalchemy.orm import relationship
 
 # Book class that holds book information
@@ -18,3 +18,4 @@ class Book(Base, UserMixin, SerializerMixin):
     description = Column(String(200), nullable = False)
     sold_copies = Column(Integer, nullable = False)
     reviews = relationship('Review')
+    wishlist_name = Column(String(50), ForeignKey('wishlists.wishlist_name'))

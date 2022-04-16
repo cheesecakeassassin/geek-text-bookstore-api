@@ -181,16 +181,38 @@ def add_card():
 ###########################################################################
 
 # Retrieve list of books from given user's wishlist
-@bp.route('/wishlist/<username>', methods=['GET'])
-def get_wishlist(username):
+@bp.route('/wishlist/<wishlist_name>', methods=['GET'])
+def get_wishlist(wishlist_name):
   # Import database
   db = get_db()
 
   # Get the user from the DB
+  wishlist = db.query(Wishlist).filter_by(wishlist_name=wishlist_name).first()
+
+  # Return the wish list as json
+  wishlist_list = [book.to_dict() for book in wishlist.books]
+
+  return jsonify(wishlist_list)
+
+# Create empty wishlist for user
+@bp.route('/create-wishlist/<username>', methods=['POST'])
+def create_empty_wishlist(username):
+  # Import database
+  db = get_db()
+  data = request.get_json()
+
+  # Get the user from the DB
   user = db.query(User).filter_by(username=username).first()
 
+  # Create empty wishlist with unique name
+  new_wishlist = Wishlist(
+    username = username,
+    wishlist_name = data['wishlist_name']
+  )
+  db.add(new_wishlist)
+  db.commit()
   # Get the list of books
-  user_list = user.wishlist
+  user_list = user.wishlists
 
   # Return the wish list as json
   wishlist = [book.to_dict() for book in user_list]
@@ -199,68 +221,51 @@ def get_wishlist(username):
     
     
 # Add book to given user's wishlist
-@bp.route('/wishlist/', methods=['POST'])
-def create_wishlist():
+@bp.route('/wishlist/<username>', methods=['POST'])
+def add_book_to_wishlist(username):
   # Import database
   db = get_db()
   data = request.get_json()
 
-  # Create wishlist
-  new_wishlist = Wishlist(
-    username = data['username'],
-    book_id = data['book_id'],
-    wishlist_name = data['wishlist_name']
-  )
-
   # Get the user and book from the DB
-  user = db.query(User).filter_by(username=data['username']).first()
   book = db.query(Book).get(data['book_id'])
-  wishlists = db.query(Wishlist).all()
+  wishlist = db.query(Wishlist).filter_by(wishlist_name=data['wishlist_name']).one()
 
   # Add book to the wish list
-  user.wishlist.append(book)
+  wishlist.books.append(book)
  
   # Save the wish list into the DB
-  db.add(new_wishlist)
   db.commit()
 
-  # Requery wishlists after adding new one
-  # TODO: Make more efficient in future
-  wishlists = db.query(Wishlist).all()
+  return jsonify(wishlist.to_dict())
+  # # Requery wishlists after adding new one
+  # # TODO: Make more efficient in future
+  # wishlists = db.query(Wishlist).all()
 
-  # List of wishlists
-  wishlist_list = [wishlist.to_dict() for wishlist in wishlists]
+  # # List of wishlists
+  # wishlist_list = [wishlist.to_dict() for wishlist in wishlists]
   
-  return jsonify(wishlist_list)
+  # return jsonify(wishlist_list)
 
 
 # Remove a book from given user's wishlist and send to shopping cart
-@bp.route('/wishlist/', methods=['DELETE'])
-def move_to_shopping_cart():
+@bp.route('/wishlist/<username>', methods=['DELETE'])
+def move_to_shopping_cart(username):
   # Import database
   db = get_db()
   data = request.get_json()
 
-  # User and the book they want removed from the wishlist
-  username = data['username']
-  book_id = data['book_id']
-  wishlist_name = data['wishlist_name']
-
   # Get the user and book from the DB
-  user = db.query(User).filter_by(username=username).first()
-  book = db.query(Book).get(book_id)
+  book = db.query(Book).get(data['book_id'])
+  wishlist = db.query(Wishlist).filter_by(wishlist_name=data['wishlist_name']).one()
 
-  # Remove book from the wish list and send it to shopping cart
-  user.wishlist.remove(book)
-  user.shopping_cart.append(book)
-
+  # Add book to the wish list
+  wishlist.books.remove(book)
+ 
   # Save the wish list into the DB
   db.commit()
 
-  # Return book removed from wish list
-  my_book = book.to_dict()
-
-  return jsonify(my_book)
+  return jsonify(wishlist.to_dict())
 
 
 

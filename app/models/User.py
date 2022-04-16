@@ -8,11 +8,11 @@ import bcrypt
 salt = bcrypt.gensalt()
 
 # Create a wishlist (association table - many-to-many relationship)
-wishlist = Table('wishlist',
-  Base.metadata,
-  Column('username', String(50), ForeignKey('users.username')), 
-  Column('book_id', Integer, ForeignKey('books.id'))
-)
+# wishlist = Table('wishlist',
+#   Base.metadata,
+#   Column('username', String(50), ForeignKey('users.username')), 
+#   Column('book_id', Integer, ForeignKey('books.id'))
+# )
 
 # Create a shopping cart table
 shopping_cart = Table('shopping_cart',
@@ -31,7 +31,7 @@ class User(Base, SerializerMixin):
   home_address = Column(String(100), nullable=True)
   password = Column(String(100), nullable=False)
   cards = relationship('Card', cascade='all,delete,delete-orphan')
-  wishlist = relationship('Book', secondary=wishlist)
+  wishlists = relationship('Wishlist')
   shopping_cart = relationship('Book', secondary=shopping_cart)
   reviews = relationship('Review')
 
